@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>MEMBER</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="registerForm" style="text-align: center">
+    <mat-form-field appearance="legacy">
+      <mat-label>Member ID</mat-label>
+      <input
+        matInput
+        placeholder="NH-xxxx"
+        formControlName="memberId"
+        [readonly]="true"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>ID Card</mat-label>
+      <input matInput placeholder="" formControlName="idCard" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Title Name</mat-label>
+      <input matInput placeholder="" formControlName="titleName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Gender</mat-label>
+      <input matInput placeholder="" formControlName="gender" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>FirstName</mat-label>
+      <input matInput placeholder="" formControlName="firstName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>LastName </mat-label>
+      <input matInput placeholder="" formControlName="lastName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Address</mat-label>
+      <input matInput placeholder="" formControlName="address" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>PhoneNumber</mat-label>
+      <input matInput placeholder="" formControlName="phoneNumber" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput placeholder="" formControlName="username" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        placeholder=""
+        formControlName="password"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Position</mat-label>
+      <input matInput placeholder="" formControlName="position" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="" formControlName="description" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    (click)="onSubmit()"
+    [disabled]="registerForm.invalid"
+  >
+    <mat-icon class="mat-18"> save </mat-icon>
+    SAVE
+  </button>
+</mat-dialog-actions>

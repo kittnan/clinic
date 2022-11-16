@@ -1,0 +1,35 @@
+<div fxLayout="row wrap" fxLayoutAlign="center stretch" class="container">
+    <div fxFlex="30" fxLayout="column wrap" fxLayoutAlign="center stretch">
+      <div
+        fxFlex="40"
+        class="box"
+        fxLayout="row wrap"
+        fxLayoutAlign="center stretch"
+      >
+        <form
+          [formGroup]="loginForm"
+          fxFlex="100"
+          fxLayout="row wrap"
+          fxLayoutAlign="space-around stretch"
+          (submit)="onLogin()"
+        >
+          <div fxFlex="100" style="text-align: center">
+            <span class="material-icons-outlined">
+              people_alt
+              </span></div>
+          <mat-form-field fxFlex="80" appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+          </mat-form-field>
+          <mat-form-field fxFlex="80" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" />
+          </mat-form-field>
+          <button mat-raised-button class="btn-success" fxFlex="50" type="submit">
+            LOGIN
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
