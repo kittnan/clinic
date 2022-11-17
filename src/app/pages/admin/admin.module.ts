@@ -11,19 +11,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemberComponent } from './member/member.component';
 import { MemberAddComponent } from './member/member-add/member-add.component';
+import { CustomerComponent } from './customer/customer.component';
 
 
 @NgModule({
   declarations: [
     AdminComponent,
     MemberComponent,
-    MemberAddComponent
+    MemberAddComponent,
+    CustomerComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     MaterialModule,
-    // ShareModule,
+    ShareModule,
     // BrowserAnimationsModule, 
     // BrowserModule,
     // HttpClientModule,

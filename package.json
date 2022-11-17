@@ -27,6 +27,7 @@
     "@ng-icons/heroicons": "^22.4.0",
     "@ng-icons/octicons": "^22.4.0",
     "material-icons": "^1.12.1",
+    "moment": "^2.29.4",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.6.5",
     "tslib": "^2.3.0",

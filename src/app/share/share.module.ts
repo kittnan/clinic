@@ -6,9 +6,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../materials/materials.module';
 import { NgIconsModule } from '@ng-icons/core';
 import { RouterModule } from '@angular/router';
+import { ShareCustomerComponent } from './components/page/share-customer/share-customer.component';
+import { DialogCustomerComponent } from './components/page/share-customer/dialog-customer/dialog-customer.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ShareCustomerComponent,
+    DialogCustomerComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,6 +24,8 @@ import { RouterModule } from '@angular/router';
     NgIconsModule,
     RouterModule
   ],
-  exports: [ ],
+  exports: [ 
+    ShareCustomerComponent
+  ],
 })
 export class ShareModule {}

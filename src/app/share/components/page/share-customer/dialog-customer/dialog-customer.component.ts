@@ -1,32 +1,33 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { MemberHttpService } from 'src/app/api/member-http.service';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-member-add',
-  templateUrl: './member-add.component.html',
-  styleUrls: ['./member-add.component.scss'],
+  selector: 'app-dialog-customer',
+  templateUrl: './dialog-customer.component.html',
+  styleUrls: ['./dialog-customer.component.scss'],
 })
-export class MemberAddComponent implements OnInit {
+export class DialogCustomerComponent implements OnInit {
   registerForm = new FormGroup({
-    memberId: new FormControl('', Validators.required),
+    customerId: new FormControl('', Validators.required),
     idCard: new FormControl('', Validators.required),
     titleName: new FormControl('', Validators.required),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     gender: new FormControl('', Validators.required),
-    username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    birthDay: new FormControl('', Validators.required),
+    age: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
     phoneNumber: new FormControl('', Validators.required),
-    position: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
+    congenitalDisease: new FormControl('', Validators.required),
+    allergic: new FormControl('', Validators.required),
     description: new FormControl(''),
     updateBy: new FormControl('', Validators.required),
   });
-
   userLogin: any;
   titleNameList = ['นาย', 'นาง', 'นางสาว', 'เด็กชาย', 'เด็กหญิง'];
   genderList = ['ชาย', 'หญิง'];
@@ -36,7 +37,7 @@ export class MemberAddComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private $member: MemberHttpService
+    private $customer: CustomerHttpService
   ) {}
 
   ngOnInit(): void {
@@ -51,29 +52,39 @@ export class MemberAddComponent implements OnInit {
       });
       if (this.data.read) this.readOnlyState = true;
     } else {
-      this.getMemberId();
+      this.getCustomerId();
     }
   }
 
-  async getMemberId() {
-    const member = await this.$member.getLast().toPromise();
+  async getCustomerId() {
+    const member = await this.$customer.getLast().toPromise();
     if (member && member.length > 0) {
-      this.genMemberId(member[0].memberId);
-    }else{
+      this.genCustomerId(member[0].customerId);
+    } else {
       this.registerForm.patchValue({
-        memberId: 'NHM-0001',
-      })
+        customerId: 'NH-0001',
+      });
     }
   }
-  genMemberId(memberId: any) {
-    const str = memberId.split('-');
-    let newMemberId: any = Number(str[1]) + 1;
-    newMemberId = newMemberId.toString();
-    newMemberId = newMemberId.padStart(4, '0');
-    newMemberId = `${str[0]}-${newMemberId}`;
+  genCustomerId(customerId: any) {
+    const str = customerId.split('-');
+    let newCustomerId: any = Number(str[1]) + 1;
+    newCustomerId = newCustomerId.toString();
+    newCustomerId = newCustomerId.padStart(4, '0');
+    newCustomerId = `${str[0]}-${newCustomerId}`;
     this.registerForm.patchValue({
-      memberId: newMemberId,
+      customerId: newCustomerId,
     });
+  }
+
+  // ! event html
+  onBirthDay() {
+    var m = moment(this.registerForm.value.birthDay, 'YYYY-MM-DD');
+    var years = moment().diff(m, 'years',false);
+    this.registerForm.patchValue({
+      age:years.toString()
+    })
+  
   }
 
   onSubmit() {
@@ -86,7 +97,7 @@ export class MemberAddComponent implements OnInit {
 
   onAdd() {
     Swal.fire({
-      title: 'Do you want to add new member?',
+      title: 'Do you want to add new customer?',
       icon: 'question',
       showCancelButton: true,
     }).then((result) => {
@@ -97,7 +108,7 @@ export class MemberAddComponent implements OnInit {
   }
 
   async add(value: any) {
-    this.$member.add(value).subscribe((res) => {
+    this.$customer.add(value).subscribe((res) => {
       if (res && res.length > 0) {
         Swal.fire('SUCCESS', '', 'success');
         this.dialogRef.close(res);
@@ -109,7 +120,7 @@ export class MemberAddComponent implements OnInit {
 
   onEdit() {
     Swal.fire({
-      title: 'Do you want to update member?',
+      title: 'Do you want to update customer?',
       icon: 'question',
       showCancelButton: true,
     }).then((result) => {
@@ -120,7 +131,7 @@ export class MemberAddComponent implements OnInit {
   }
 
   edit(member: any) {
-    this.$member.update(this.data._id, member).subscribe((res) => {
+    this.$customer.update(this.data._id, member).subscribe((res) => {
       if (res && res.acknowledged) {
         Swal.fire('SUCCESS', '', 'success');
         this.dialogRef.close(res);

@@ -35,6 +35,11 @@ export class AppComponent {
           title:'member'
         },
         {
+          path:'/admin/customer',
+          icon:'group',
+          title:'customer'
+        },
+        {
           path:'/admin/master',
           icon:'category',
           title:'master'
