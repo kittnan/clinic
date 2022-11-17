@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MemberHttpService } from 'src/app/api/member-http.service';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 import { MemberAddComponent } from './member-add/member-add.component';
 
 
@@ -26,23 +27,29 @@ export class MemberComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const member = await this.getMember()
-    console.log(member);
-    
+    this.getMember()
+  }
+
+  async getMember(){
+    const member = await this.$member.get().toPromise()
     this.dataSource = new MatTableDataSource(member)
+    this.setTable()
+  }
+  setTable(){
     this.displayedColumns = ['memberId','firstName','phoneNumber','email','position','updateBy','action']
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-  }
-
-  getMember(){
-  return  this.$member.get().toPromise()
   }
 
   add() {
     const dialogRef: MatDialogRef<any> = this.dialog.open(MemberAddComponent,{
       maxWidth:600
     });
+    dialogRef.afterClosed().subscribe(res=>{
+      if(res){
+        this.getMember()
+      }
+    })
   }
 
   applyFilter(event: Event) {
@@ -52,6 +59,51 @@ export class MemberComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+  onDelete(item:any){
+    Swal.fire({
+      title:`${item.firstName} ${item.lastName}`,
+      icon:'question',
+      showCancelButton:true,
+    }).then((value:SweetAlertResult)=>{
+      if(value.isConfirmed){
+        this.delete(item._id)
+      }
+    })
+  }
+  delete(_id:any){
+    this.$member.delete(_id).subscribe(res=>{
+      console.log(res);
+      if(res && res.acknowledged){
+        Swal.fire('SUCCESS','','success')
+        this.getMember()
+      }else{
+        Swal.fire('ERROR','','error')
+      }
+      
+    })
+  }
+
+  onEdit(item:any){
+    const dialogRef = this.dialog.open(MemberAddComponent,{
+      data:item,
+      maxWidth:600
+    })
+    dialogRef.afterClosed().subscribe(res=>{
+      if(res){
+        this.getMember()
+      }
+    })
+  }
+
+  onView(item:any){
+    const dialogRef = this.dialog.open(MemberAddComponent,{
+      data:{
+        ...item,
+        read:true
+      },
+      maxWidth:600
+    })
   }
 
 

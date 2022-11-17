@@ -28,7 +28,11 @@ export class MemberAddComponent implements OnInit {
   });
 
   userLogin: any;
+  titleNameList = ['นาย', 'นาง', 'นางสาว', 'เด็กชาย', 'เด็กหญิง'];
+  genderList = ['ชาย', 'หญิง'];
 
+  positionList = ['reception', 'doctor', 'admin'];
+  readOnlyState: any = false;
   constructor(
     private dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -36,18 +40,23 @@ export class MemberAddComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getMemberId();
-
     const user: any = localStorage.getItem('userLogin');
     this.userLogin = JSON.parse(user);
     this.registerForm.patchValue({
       updateBy: this.userLogin.username,
     });
+    if (this.data) {
+      this.registerForm.patchValue({
+        ...this.data,
+      });
+      if (this.data.read) this.readOnlyState = true;
+    } else {
+      this.getMemberId();
+    }
   }
 
   async getMemberId() {
     const member = await this.$member.getLast().toPromise();
-    console.log(member);
     if (member && member.length > 0) {
       this.genMemberId(member[0].memberId);
     }
@@ -56,14 +65,22 @@ export class MemberAddComponent implements OnInit {
     const str = memberId.split('-');
     let newMemberId: any = Number(str[1]) + 1;
     newMemberId = newMemberId.toString();
-    newMemberId = newMemberId.padStart(4,"0")
-    newMemberId = `${str[0]}-${newMemberId}`
+    newMemberId = newMemberId.padStart(4, '0');
+    newMemberId = `${str[0]}-${newMemberId}`;
     this.registerForm.patchValue({
-      memberId: newMemberId
-    })
+      memberId: newMemberId,
+    });
   }
 
   onSubmit() {
+    if (this.data) {
+      this.onEdit();
+    } else {
+      this.onAdd();
+    }
+  }
+
+  onAdd() {
     Swal.fire({
       title: 'Do you want to add new member?',
       icon: 'question',
@@ -79,7 +96,30 @@ export class MemberAddComponent implements OnInit {
     this.$member.add(value).subscribe((res) => {
       if (res && res.length > 0) {
         Swal.fire('SUCCESS', '', 'success');
-        this.dialogRef.close()
+        this.dialogRef.close(res);
+      } else {
+        Swal.fire('SOMETHING IS WRONG', '', 'error');
+      }
+    });
+  }
+
+  onEdit() {
+    Swal.fire({
+      title: 'Do you want to update member?',
+      icon: 'question',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.edit(this.registerForm.value);
+      }
+    });
+  }
+
+  edit(member: any) {
+    this.$member.update(this.data._id, member).subscribe((res) => {
+      if (res && res.acknowledged) {
+        Swal.fire('SUCCESS', '', 'success');
+        this.dialogRef.close(res);
       } else {
         Swal.fire('SOMETHING IS WRONG', '', 'error');
       }

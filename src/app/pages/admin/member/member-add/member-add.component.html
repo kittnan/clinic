@@ -13,42 +13,61 @@
 
     <mat-form-field appearance="fill">
       <mat-label>ID Card</mat-label>
-      <input matInput placeholder="" formControlName="idCard" />
+      <input matInput placeholder=""  formControlName="idCard" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Title Name</mat-label>
-      <input matInput placeholder="" formControlName="titleName" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Gender</mat-label>
-      <input matInput placeholder="" formControlName="gender" />
+      <mat-select  formControlName="titleName">
+        <mat-option
+          *ngFor="let item of titleNameList; let i = index"
+          [value]="item"
+        >
+          {{ item | uppercase }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>FirstName</mat-label>
-      <input matInput placeholder="" formControlName="firstName" />
+      <input matInput placeholder=""  formControlName="firstName" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>LastName </mat-label>
-      <input matInput placeholder="" formControlName="lastName" />
+      <input matInput placeholder=""  formControlName="lastName" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Address</mat-label>
-      <input matInput placeholder="" formControlName="address" />
+      <mat-label>Gender</mat-label>
+      <mat-select  formControlName="gender">
+        <mat-option
+          *ngFor="let item of genderList; let i = index"
+          [value]="item"
+        >
+          {{ item | uppercase }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>PhoneNumber</mat-label>
-      <input matInput placeholder="" formControlName="phoneNumber" />
+      <input matInput placeholder=""  formControlName="phoneNumber" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Address</mat-label>
+      <textarea matInput rows="5"  formControlName="address"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder=""  formControlName="email" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input matInput placeholder="" formControlName="username" />
+      <input matInput placeholder=""  formControlName="username" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -57,29 +76,32 @@
         matInput
         type="password"
         placeholder=""
-        formControlName="password"
+         formControlName="password"
       />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="" formControlName="email" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
       <mat-label>Position</mat-label>
-      <input matInput placeholder="" formControlName="position" />
+      <mat-select  formControlName="position">
+        <mat-option
+          *ngFor="let item of positionList; let i = index"
+          [value]="item"
+        >
+          {{ item | uppercase }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
-      <input matInput placeholder="" formControlName="description" />
+      <textarea matInput rows="5"  formControlName="description"></textarea>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
   <button
+    *ngIf="data && !readOnlyState"
     mat-button
     (click)="onSubmit()"
     [disabled]="registerForm.invalid"
@@ -87,4 +109,15 @@
     <mat-icon class="mat-18"> save </mat-icon>
     SAVE
   </button>
+  <button
+    *ngIf="!data && !readOnlyState"
+    mat-button
+    (click)="onSubmit()"
+    [disabled]="registerForm.invalid"
+  >
+    <mat-icon class="mat-18"> add_task </mat-icon>
+    CREATE
+  </button>
+
+
 </mat-dialog-actions>
