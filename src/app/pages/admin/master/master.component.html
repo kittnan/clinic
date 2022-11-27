@@ -1,1 +1,13 @@
-<p>master works!</p>
+<div fxLayoutAlign="center stretch" fxLayout="row wrap" style="padding: 20px;"  >
+  <mat-form-field fxFlex="80" appearance="fill" style="margin-top: 20px">
+    <mat-label>Select Master</mat-label>
+    <mat-select [(ngModel)]="master" >
+      <mat-option *ngFor="let master of masters" [value]="master">
+        {{ master | uppercase }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <app-checkup fxFlex="80" *ngIf="master=='checkHeal'" ></app-checkup>
+
+</div>

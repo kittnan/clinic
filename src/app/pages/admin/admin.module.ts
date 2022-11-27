@@ -13,6 +13,8 @@ import { MemberComponent } from './member/member.component';
 import { MemberAddComponent } from './member/member-add/member-add.component';
 import { CustomerComponent } from './customer/customer.component';
 import { MasterComponent } from './master/master.component';
+import { CheckupComponent } from './master/checkup/checkup.component';
+import { DialogCheckupComponent } from './master/checkup/dialog-checkup/dialog-checkup.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { MasterComponent } from './master/master.component';
     MemberComponent,
     MemberAddComponent,
     CustomerComponent,
-    MasterComponent
+    MasterComponent,
+    CheckupComponent,
+    DialogCheckupComponent
   ],
   imports: [
     CommonModule,

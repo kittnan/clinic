@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   access(position: String) {
     return new Promise((resolve) => {
       if (position === 'admin') resolve('admin');
-      if (position === 'doctor') resolve('doctor');
+      if (position === 'reception') resolve('reception');
       if (position === 'doctor') resolve('doctor');
       if (position === 'doctor') resolve('doctor');
     });
