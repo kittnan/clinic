@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemberComponent } from './member/member.component';
 import { MemberAddComponent } from './member/member-add/member-add.component';
 import { CustomerComponent } from './customer/customer.component';
+import { MasterComponent } from './master/master.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CustomerComponent } from './customer/customer.component';
     AdminComponent,
     MemberComponent,
     MemberAddComponent,
-    CustomerComponent
+    CustomerComponent,
+    MasterComponent
   ],
   imports: [
     CommonModule,

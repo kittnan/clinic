@@ -75,7 +75,6 @@ export class ShareCustomerComponent implements OnInit {
   }
   delete(_id:any){
     this.$customer.delete(_id).subscribe(res=>{
-      console.log(res);
       if(res && res.acknowledged){
         Swal.fire('SUCCESS','','success')
         this.getMember()

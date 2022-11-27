@@ -20,13 +20,14 @@ export class DialogCustomerComponent implements OnInit {
     lastName: new FormControl('', Validators.required),
     gender: new FormControl('', Validators.required),
     birthDay: new FormControl('', Validators.required),
-    age: new FormControl('', Validators.required),
+    age: new FormControl(''),
     address: new FormControl('', Validators.required),
     phoneNumber: new FormControl('', Validators.required),
     congenitalDisease: new FormControl('', Validators.required),
     allergic: new FormControl('', Validators.required),
     description: new FormControl(''),
     updateBy: new FormControl('', Validators.required),
+    status: new FormControl('test'),
   });
   userLogin: any;
   titleNameList = ['นาย', 'นาง', 'นางสาว', 'เด็กชาย', 'เด็กหญิง'];
@@ -49,7 +50,9 @@ export class DialogCustomerComponent implements OnInit {
     if (this.data) {
       this.registerForm.patchValue({
         ...this.data,
+        status:'test',
       });
+      this.onBirthDay()
       if (this.data.read) this.readOnlyState = true;
     } else {
       this.getCustomerId();
