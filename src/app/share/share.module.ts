@@ -25,7 +25,7 @@ import { DialogCustomerComponent } from './components/page/share-customer/dialog
     RouterModule
   ],
   exports: [ 
-    ShareCustomerComponent
+    ShareCustomerComponent,
   ],
 })
 export class ShareModule {}

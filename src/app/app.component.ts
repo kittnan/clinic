@@ -46,6 +46,22 @@ export class AppComponent {
         }
       ]
     }
+    if (access === 'reception') {
+      this.routerItems = [
+      
+        {
+          path:'/reception/customer',
+          icon:'group',
+          title:'customer'
+        },
+        {
+          path:'/reception/queue',
+          icon:'badge',
+          title:'queue'
+        },
+      
+      ]
+    }
   }
 
   logout(): void {

@@ -1,0 +1,7 @@
+<div fxLayout="row wrap" fxLayoutAlign="center stretch">
+  <div fxFlex="80" fxLayout="row wrap" fxLayoutAlign="start stretch">
+    <app-table-select fxFlex="100" (selectChange)="emit($event)"></app-table-select>
+    <app-user-form *ngIf="queueForm.value.userId" [id]="queueForm.value.userId"></app-user-form>
+    <p fxFlex="100">{{queueForm.value|json}}</p>
+  </div>
+</div>

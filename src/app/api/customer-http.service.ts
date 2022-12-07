@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,9 @@ export class CustomerHttpService {
  
   get(): Observable<any>{
     return this.http.get(`${this.URL}/customers/`)
+  }
+  getId(params:HttpParams): Observable<any>{
+    return this.http.get(`${this.URL}/customers/id`,{params})
   }
   add(data:any): Observable<any>{
     return this.http.post(`${this.URL}/customers/add/`,data)
