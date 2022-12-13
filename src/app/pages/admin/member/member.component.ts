@@ -31,7 +31,7 @@ export class MemberComponent implements OnInit {
   }
 
   async getMember(){
-    const member = await this.$member.get().toPromise()
+    const member = await this.$member.get({}).toPromise()
     this.dataSource = new MatTableDataSource(member)
     this.setTable()
   }

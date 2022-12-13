@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,13 @@ export class MemberHttpService {
   ) { }
 
  
-  get(): Observable<any>{
-    return this.http.get(`${this.URL}/members/`)
+  get(p:any): Observable<any>{
+    return this.http.get(`${this.URL}/members/`,{
+      params:p
+    })
+  }
+  getDoctor(): Observable<any>{
+    return this.http.get(`${this.URL}/members/doctor`)
   }
   add(data:any): Observable<any>{
     return this.http.post(`${this.URL}/members/add/`,data)

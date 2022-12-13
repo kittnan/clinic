@@ -10,7 +10,9 @@ import { MaterialModule } from 'src/app/materials/materials.module';
 import { QueueAddComponent } from './queue-add/queue-add.component';
 import { TableSelectComponent } from './queue-add/table-select/table-select.component';
 import { UserFormComponent } from './queue-add/user-form/user-form.component';
-
+import { InputQueueComponent } from './queue-add/input-queue/input-queue.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,13 +21,17 @@ import { UserFormComponent } from './queue-add/user-form/user-form.component';
     QueueComponent,
     QueueAddComponent,
     TableSelectComponent,
-    UserFormComponent
+    UserFormComponent,
+    InputQueueComponent
   ],
   imports: [
     CommonModule,
     ReceptionRoutingModule,
     ShareModule,
-    MaterialModule
+    MaterialModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ReceptionModule { }

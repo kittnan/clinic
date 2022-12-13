@@ -37,7 +37,10 @@ export class TableSelectComponent implements OnInit {
     }).then((value:SweetAlertResult)=>{
       if(value.isConfirmed){
         Swal.fire('SUCCESS','','success')
-        this.selectChange.emit(item)
+        this.selectChange.emit({
+          customerId: item._id,
+          customerName:`${item.titleName}${item.firstName} ${item.lastName}`
+        })
       }
     })
   }

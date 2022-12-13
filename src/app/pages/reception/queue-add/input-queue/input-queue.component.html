@@ -1,0 +1,12 @@
+<div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap" class="box">
+  <label for="">SELECT DATE</label>
+
+  <input fxFlex="20" type="date" [(ngModel)]="date" (change)="genTime()" />
+  <input fxFlex="20" type="time" [(ngModel)]="time" (change)="genTime()" />
+
+  <select [(ngModel)]="doctor" (change)="genTime()" >
+    <option *ngFor="let item of doctorList; let i=index" [value]="item._id">
+      {{item.firstName}} {{item.lastName}}
+    </option>
+  </select>
+</div>
