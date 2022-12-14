@@ -51,17 +51,18 @@ export class QueueComponent implements OnInit {
   }
 
   add() {
-    const dialogRef: MatDialogRef<any> = this.dialog.open(
-      DialogCustomerComponent,
-      {
-        maxWidth: 1000,
-      }
-    );
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.getMember();
-      }
-    });
+    this._router.navigate(['reception/queue-add'])
+    // const dialogRef: MatDialogRef<any> = this.dialog.open(
+    //   DialogCustomerComponent,
+    //   {
+    //     maxWidth: 1000,
+    //   }
+    // );
+    // dialogRef.afterClosed().subscribe((res) => {
+    //   if (res) {
+    //     this.getMember();
+    //   }
+    // });
   }
 
   applyFilter(event: Event) {

@@ -13,6 +13,7 @@ import { UserFormComponent } from './queue-add/user-form/user-form.component';
 import { InputQueueComponent } from './queue-add/input-queue/input-queue.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TableQueueComponent } from './queue-add/table-queue/table-queue.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     QueueAddComponent,
     TableSelectComponent,
     UserFormComponent,
-    InputQueueComponent
+    InputQueueComponent,
+    TableQueueComponent
   ],
   imports: [
     CommonModule,

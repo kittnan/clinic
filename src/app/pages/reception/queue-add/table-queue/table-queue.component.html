@@ -1,0 +1,28 @@
+<div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap">
+  <mat-form-field fxFlex="100" appearance="fill">
+    <mat-label>SELECT RANGE</mat-label>
+    <mat-select [(ngModel)]="keyRange" (selectionChange)="onSelectRange()">
+      <mat-option *ngFor="let key of keyRangeList" [value]="key">
+        {{ key|uppercase }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <table fxFlex="100">
+    <tr>
+        <th>เวลา</th>
+        <th>คนไข้</th>
+        <th>หมอ</th>
+    </tr>
+    <tr *ngFor="let item of queue; let i=index">
+        <td >
+            {{item.startDate|date:'MMM d, y, h:mm:ss a'}}
+        </td>
+        <td >
+            {{item.customerName}}
+        </td>
+        <td >
+            {{item.doctorName}}
+        </td>
+    </tr>
+  </table>
+</div>
