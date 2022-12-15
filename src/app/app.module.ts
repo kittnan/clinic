@@ -16,7 +16,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +31,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     ShareModule,
     ReactiveFormsModule,
     FormsModule,
-    NgIconsModule.withIcons({ featherAirplay, heroUsers,octSignIn, })
+    NgIconsModule.withIcons({ featherAirplay, heroUsers,octSignIn, }),
+  
   ],
   providers: [],
   bootstrap: [AppComponent]

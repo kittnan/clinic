@@ -31,5 +31,8 @@ export class QueueHttpService {
   queueMonth(param:HttpParams): Observable<any> {
     return this.http.get(`${this.URL}/${this.sub}/month`,{params:param});
   }
+  queuePeriod(param:HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/period`,{params:param});
+  }
 
 }

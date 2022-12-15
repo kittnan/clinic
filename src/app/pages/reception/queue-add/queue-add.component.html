@@ -1,9 +1,32 @@
 <div fxLayout="row wrap" fxLayoutAlign="center stretch">
   <div fxFlex="80" fxLayout="row wrap" fxLayoutAlign="start stretch">
-    <app-table-select fxFlex="100" (selectChange)="emit($event)"></app-table-select>
+    <app-table-queue fxFlex="100"></app-table-queue>
     <!-- <app-user-form fxFlex="100" *ngIf="queueForm.value.customerId" [id]="queueForm.value.userId"></app-user-form> -->
-    <app-input-queue fxFlex="100" (dataChange)="emitQueue($event)" ></app-input-queue>
-    <app-table-queue fxFlex="100" [doctorId]="queueForm.value.doctorId" ></app-table-queue>
-    <button fxFlex="100" mat-raised-button color="primary" (click)="send()">Send</button>
+
+    <div
+      fxFlex="100"
+      fxLayout="row wrap"
+      fxLayoutAlign="start stretch"
+      class="box"
+    >
+      <h4 fxFlex="100" for="">INPUT QUEUE</h4>
+      <app-table-select
+        fxFlex="100"
+        (selectChange)="emit($event)"
+      ></app-table-select>
+      <app-input-queue
+        fxFlex="100"
+        (dataChange)="emitQueue($event)"
+      ></app-input-queue>
+      <button
+        fxFlex="100"
+        mat-raised-button
+        color="primary"
+        [disabled]="this.queueForm.invalid"
+        (click)="send()"
+      >
+        SUBMIT
+      </button>
+    </div>
   </div>
 </div>

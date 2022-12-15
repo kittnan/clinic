@@ -11,10 +11,9 @@ import { MemberHttpService } from 'src/app/api/member-http.service';
 export class InputQueueComponent implements OnInit {
 
   @Output() dataChange :EventEmitter<any> = new EventEmitter()
-
   date:any
   time:any
-  start = moment()
+  start :any
 
   doctorList:any[] =[]
   doctor:any
@@ -27,7 +26,8 @@ export class InputQueueComponent implements OnInit {
   }
 
   genTime(){
-    this.start = moment(this.date + ' ' + this.time)
+    const date = moment(this.date).format('YYYY-MM-DD')
+    this.start = moment(date + ' ' + this.time)
     const doctorFind = this.doctorList.find((d:any)=>d._id==this.doctor)
     let doctor 
     if(doctorFind){

@@ -19,7 +19,7 @@ export class QueueAddComponent implements OnInit {
     doctorId: new FormControl(null, Validators.required),
     doctorName: new FormControl(null, Validators.required),
     startDate: new FormControl(null, Validators.required),
-    endDate: new FormControl(null, Validators.required),
+    endDate: new FormControl(null),
     updateBy: new FormControl(null, Validators.required),
   });
   userLogin: any;
@@ -56,6 +56,7 @@ export class QueueAddComponent implements OnInit {
     });
   }
   emitQueue(e: any) {
+    
     this.queueForm.patchValue({
       ...e,
     });
@@ -73,8 +74,11 @@ export class QueueAddComponent implements OnInit {
   }
   create() {
     this.$queue.add(this.queueForm.value).subscribe((res) => {
-      if (res && res.length > 0) {
+      if (res && !res.error && res.length > 0) {
         Swal.fire('SUCCESS', '', 'success');
+      }else{
+        Swal.fire(`มีคิว ${res.data[0].customerName} อยู่แล้ว`, '', 'error');
+        console.log(res);
       }
     });
   }

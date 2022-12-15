@@ -36,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+
 const materialModules = [
   CdkTreeModule,
   MatAutocompleteModule,
@@ -72,6 +73,8 @@ const materialModules = [
   FlexLayoutModule,
   MatDialogModule,
   MatNativeDateModule,
+
+ 
 ];
 @NgModule({
   declarations: [],

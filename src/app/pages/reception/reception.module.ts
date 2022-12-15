@@ -34,6 +34,8 @@ import { TableQueueComponent } from './queue-add/table-queue/table-queue.compone
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule
+
+
   ]
 })
 export class ReceptionModule { }
