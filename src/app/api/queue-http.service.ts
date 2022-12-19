@@ -10,8 +10,8 @@ export class QueueHttpService {
   private sub: any = 'queue';
   constructor(private http: HttpClient) {}
 
-  get(): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/`);
+  get(param:HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/`,{params:param});
   }
   add(data: any): Observable<any> {
     return this.http.post(`${this.URL}/${this.sub}/add/`, data);

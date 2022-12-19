@@ -1,1 +1,98 @@
-<p>heal works!</p>
+<div fxFlex="100" fxLayoutAlign="center stretch" fxLayout="row wrap">
+  <div
+    fxFlex.gt-md="80"
+    fxFlex.gt-xs="100"
+    fxFlex="100"
+    fxLayoutAlign="center stretch"
+    fxLayout="row wrap"
+    class="box"
+  >
+    <div
+      fxFlex="100"
+      fxLayoutAlign="start stretch"
+      fxLayout="row wrap"
+      class="table"
+    >
+      <table fxFlex="100">
+        <tr>
+          <th>GROUP</th>
+          <th>ITEM</th>
+        </tr>
+        <tr *ngFor="let healItem of healList; let i_healItem = index">
+          <td>
+            <mat-checkbox
+              [(ngModel)]="healItem.checked"
+              (ngModelChange)="checkHeal(healItem)"
+            >
+              {{ healItem.code }} {{ healItem.group }}
+            </mat-checkbox>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let item of healItem.items; let i_item = index">
+                <mat-checkbox
+                  [disabled]="!healItem.checked"
+                  [(ngModel)]="item.checked"
+                >
+                  {{ item.code }} {{ item.name }}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div
+      fxFlex="100"
+      fxLayoutAlign="start stretch"
+      fxLayout="row wrap"
+      class="table"
+    >
+      <table fxFlex="100">
+        <tr>
+          <th>GROUP</th>
+          <th>ITEM</th>
+        </tr>
+        <tr *ngFor="let sideItem of sideList; let i_sideItem = index">
+          <td>
+            <mat-checkbox
+              [(ngModel)]="sideItem.checked"
+              (ngModelChange)="checkHeal(sideItem)"
+            >
+              {{ sideItem.group }}
+            </mat-checkbox>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let item of sideItem.items; let i_item = index">
+                <mat-checkbox
+                  [disabled]="!sideItem.checked"
+                  [(ngModel)]="item.checked"
+                >
+                  {{ item.code }} {{ item.name }}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-form-field fxFlex="100" appearance="fill">
+      <mat-label>รายละเอียดเพิ่มเติม</mat-label>
+      <textarea [(ngModel)]="description" matInput [rows]="5"></textarea>
+    </mat-form-field>
+
+    <button
+      fxFlex="100"
+      mat-raised-button
+      color="primary"
+      style="margin: 20px 0"
+      (click)="onSubmit()"
+    >
+      SUBMIT
+      <mat-icon class="mat-18"> done_all </mat-icon>
+    </button>
+  </div>
+</div>

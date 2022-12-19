@@ -9,22 +9,26 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { QueueComponent } from './queue/queue.component';
+import { MaterialModule } from 'src/app/materials/materials.module';
 
 
 @NgModule({
   declarations: [
     DoctorComponent,
-    HealComponent
+    HealComponent,
+    QueueComponent
   ],
   imports: [
     CommonModule,
     DoctorRoutingModule,
-    // ShareModule,
+    ShareModule,
     // BrowserModule,
     // BrowserAnimationsModule,
-    // FormsModule,
-    // ReactiveFormsModule,
-    // HttpClientModule
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MaterialModule
   ]
 })
 export class DoctorModule { }

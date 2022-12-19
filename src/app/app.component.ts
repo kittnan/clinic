@@ -62,6 +62,22 @@ export class AppComponent {
       
       ]
     }
+    if (access === 'doctor') {
+      this.routerItems = [
+      
+        // {
+        //   path:'/doctor/heal',
+        //   icon:'group',
+        //   title:'heal'
+        // },
+        {
+          path:'/doctor/queue',
+          icon:'badge',
+          title:'queue'
+        },
+      
+      ]
+    }
   }
 
   logout(): void {

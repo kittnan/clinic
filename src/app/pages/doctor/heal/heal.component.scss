@@ -1,0 +1,19 @@
+.box{
+    box-shadow: 2px 2px 8px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+}
+.table{
+    margin: 20px 0;
+    overflow: auto;
+}
+table,th,td{
+    border: 1px solid black;
+    padding: 10px;
+}
+table{
+    border-collapse: collapse;
+}
+ul{
+    list-style: none;
+}

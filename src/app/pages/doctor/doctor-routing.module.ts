@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DoctorComponent } from './doctor.component';
 import { HealComponent } from './heal/heal.component';
+import { QueueComponent } from './queue/queue.component';
 
 const routes: Routes = [
   {
@@ -9,13 +10,17 @@ const routes: Routes = [
     component:DoctorComponent,
     children:[
       {
-        path:'test',
+        path:'queue',
+        component:QueueComponent
+      },
+      {
+        path:'heal',
         component:HealComponent
       },
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'test'
+        redirectTo: 'queue'
       }
     ]
   }
