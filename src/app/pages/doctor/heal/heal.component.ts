@@ -1,10 +1,11 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CheckupHttpService } from 'src/app/api/checkup-http.service';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { HistoryHealHttpService } from 'src/app/api/history-heal-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
+import { ToastService } from 'src/app/toast/toast.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 
 @Component({
@@ -21,13 +22,18 @@ export class HealComponent implements OnInit {
   customer: any;
   userLogin: any;
   queue: any;
+
+  nextMeetStatus = true
+  nextMeet :any
   
   constructor(
     private _route: ActivatedRoute,
+    private _router:Router,
     private $customer: CustomerHttpService,
     private $checkup: CheckupHttpService,
     private $historyHeal: HistoryHealHttpService,
-    private $queue: QueueHttpService
+    private $queue: QueueHttpService,
+    private _toast:ToastService
   ) {
     let session: any = localStorage.getItem('userLogin');
     this.userLogin = JSON.parse(session);
@@ -41,6 +47,8 @@ export class HealComponent implements OnInit {
           params['customerId']
         );
         this.customer = await this.$customer.getId(http_param).toPromise();
+        console.log(this.customer);
+        
       }
       if (params && params['queueId']) {
         const http_param: HttpParams = new HttpParams().set(
@@ -127,9 +135,35 @@ export class HealComponent implements OnInit {
       await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
     )
 
+    if(this.nextMeetStatus){
+      arr.push(
+        await this.$customer.update(this.customer[0]._id,{
+          nextMeet:{
+            status:true,
+            date:null
+          }
+        }).toPromise()
+      )
+    }else{
+      arr.push(
+        await this.$customer.update(this.customer[0]._id,{
+          nextMeet:{
+            status:false,
+            date:null
+
+          }
+        }).toPromise()
+      )
+    }
+
+    
+
     Promise.all(arr).then((value:any[])=>{
       console.log(value);
-      
+      Swal.fire('SUCCESS','','success')
+      setTimeout(() => {
+        this._router.navigate(['/doctor'])
+      }, 500);
     })
     
   }

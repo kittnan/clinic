@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CustomerComponent } from './customer/customer.component';
 import { QueueAddComponent } from './queue-add/queue-add.component';
+import { QueueDetailComponent } from './queue-detail/queue-detail.component';
 import { QueueComponent } from './queue/queue.component';
 
 const routes: Routes = [
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path:'queue-add',
     component:QueueAddComponent
+  },
+  {
+    path:'queue-detail',
+    component:QueueDetailComponent
   },
  
   {

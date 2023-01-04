@@ -8,11 +8,15 @@ import { NgIconsModule } from '@ng-icons/core';
 import { RouterModule } from '@angular/router';
 import { ShareCustomerComponent } from './components/page/share-customer/share-customer.component';
 import { DialogCustomerComponent } from './components/page/share-customer/dialog-customer/dialog-customer.component';
+import { ShareCustomerDetailComponent } from './components/share-customer-detail/share-customer-detail.component';
+import { ShareHistoryDetailComponent } from './components/share-history-detail/share-history-detail.component';
 
 @NgModule({
   declarations: [
     ShareCustomerComponent,
-    DialogCustomerComponent
+    DialogCustomerComponent,
+    ShareCustomerDetailComponent,
+    ShareHistoryDetailComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +30,8 @@ import { DialogCustomerComponent } from './components/page/share-customer/dialog
   ],
   exports: [ 
     ShareCustomerComponent,
+    ShareCustomerDetailComponent,
+    ShareHistoryDetailComponent
   ],
 })
 export class ShareModule {}

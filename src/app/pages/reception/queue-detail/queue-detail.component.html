@@ -1,0 +1,34 @@
+<div fxLayoutAlign="center stretch" fxLayout="row wrap" class="container">
+  <app-share-customer-detail
+    class="box"
+    fxFlex="80"
+    *ngIf="customer"
+    [customer]="customer"
+  ></app-share-customer-detail>
+  <app-share-history-detail class="box" fxFlex="80"></app-share-history-detail>
+  <div fxFlex="80" class="box" fxLayoutAlign="center stretch" fxLayout="row wrap">
+    <mat-form-field fxFlex="100" appearance="fill">
+      <mat-label>สถานะ</mat-label>
+      <mat-select [(ngModel)]="selectedStatus">
+        <mat-option *ngFor="let status of listStatus" [value]="status.value">
+          {{ status.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <app-input-queue
+    fxFlex="100"
+    (dataChange)="emitQueue($event)"
+  ></app-input-queue>
+
+    <button
+      fxFlex="100"
+      mat-raised-button
+      color="primary"
+      (click)="submit()"
+      style="margin: 20px"
+    >
+      SUBMIT
+    </button>
+  </div>
+</div>

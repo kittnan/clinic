@@ -35,4 +35,8 @@ export class QueueHttpService {
     return this.http.get(`${this.URL}/${this.sub}/period`,{params:param});
   }
 
+  queueDayCustomer(param:HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/dayCustomer`,{params:param});
+  }
+
 }

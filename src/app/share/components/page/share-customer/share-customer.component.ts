@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { MemberHttpService } from 'src/app/api/member-http.service';
 import { MemberAddComponent } from 'src/app/pages/admin/member/member-add/member-add.component';
@@ -22,8 +23,11 @@ export class ShareCustomerComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public dialog: MatDialog,
-    private $customer: CustomerHttpService ) {
+  constructor(
+    public dialog: MatDialog,
+    private $customer: CustomerHttpService,
+    private _router: Router
+     ) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -38,7 +42,7 @@ export class ShareCustomerComponent implements OnInit {
     this.setTable()
   }
   setTable(){
-    this.displayedColumns = ['customerId','idCard','firstName','phoneNumber','updateBy','action']
+    this.displayedColumns = ['customerId','idCard','firstName','phoneNumber','updateBy','action','queue']
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -105,6 +109,16 @@ export class ShareCustomerComponent implements OnInit {
       },
       maxWidth:600
     })
+  }
+
+  onQueue(item: any) {
+    console.log(item);
+    
+    this._router.navigate(['reception/queue-detail'], {
+      queryParams: {
+        userId: item._id,
+      },
+    });
   }
 
 }

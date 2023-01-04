@@ -14,6 +14,7 @@ import { InputQueueComponent } from './queue-add/input-queue/input-queue.compone
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableQueueComponent } from './queue-add/table-queue/table-queue.component';
+import { QueueDetailComponent } from './queue-detail/queue-detail.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TableQueueComponent } from './queue-add/table-queue/table-queue.compone
     TableSelectComponent,
     UserFormComponent,
     InputQueueComponent,
-    TableQueueComponent
+    TableQueueComponent,
+    QueueDetailComponent
   ],
   imports: [
     CommonModule,

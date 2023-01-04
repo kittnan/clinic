@@ -1,0 +1,93 @@
+<div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center stretch">
+  <div
+    *ngIf="customer"
+    fxFlex="80"
+    fxLayoutAlign="space-around stretch"
+    fxLayout="row wrap"
+    style="text-align: center"
+    
+  >
+  <h1 fxFlex="100">
+    <strong>ข้อมูลคนไข้</strong>
+  </h1>
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>CUSTOMER ID</mat-label>
+      <input matInput [(ngModel)]="customer.customerId" [readonly]="true" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>ID Card</mat-label>
+      <input matInput placeholder="" [(ngModel)]="customer.idCard" />
+    </mat-form-field>
+
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+        <mat-label>Title Name</mat-label>
+        <input matInput placeholder="" [(ngModel)]="customer.titleName" />
+      </mat-form-field>
+  
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>FirstName</mat-label>
+      <input matInput [(ngModel)]="customer.firstName" name="firstName" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>LastName </mat-label>
+      <input matInput [(ngModel)]="customer.lastName" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+        <mat-label>Gender</mat-label>
+        <input matInput placeholder="" [(ngModel)]="customer.gender" />
+      </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+        <mat-label>BIRTH DAY</mat-label>
+        <input matInput value="{{customer.birthDay |date:'dd/MM/YYYY'}}" />
+      </mat-form-field>
+  
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>AGE </mat-label>
+      <input
+        matInput
+        placeholder=""
+        [(ngModel)]="customer.age"
+        [readonly]="true"
+      />
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>PhoneNumber</mat-label>
+      <input matInput placeholder="" [(ngModel)]="customer.phoneNumber" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>Address</mat-label>
+      <textarea [disabled]="true" matInput rows="5" [(ngModel)]="customer.address"></textarea>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>CongenitalDisease</mat-label>
+      <textarea [disabled]="true"
+        matInput
+        rows="5"
+        [(ngModel)]="customer.congenitalDisease"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>Allergic</mat-label>
+      <textarea [disabled]="true" matInput rows="5" [(ngModel)]="customer.allergic"></textarea>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="40" appearance="legacy">
+      <mat-label>Description</mat-label>
+      <textarea [disabled]="true" matInput rows="5" [(ngModel)]="customer.description"></textarea>
+    </mat-form-field>
+
+    <div fxFlex="40" appearance="legacy">
+    </div>
+  </div>
+</div>

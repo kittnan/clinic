@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 import { MemberHttpService } from 'src/app/api/member-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
 
@@ -13,12 +14,14 @@ import { QueueHttpService } from 'src/app/api/queue-http.service';
   styleUrls: ['./queue.component.scss'],
 })
 export class QueueComponent implements OnInit {
+
+  interval$!: Subscription;
+
   displayedColumns: string[] =[
     'id',
     'customerName',
     'doctorName',
     'startDate',
-    'status',
     'action',
   ]
   dataSource!: MatTableDataSource<any>;
@@ -34,6 +37,8 @@ export class QueueComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.interval$ = interval(30000)
+    .subscribe(res => this.getQueue());
     this.getQueue();
   }
 

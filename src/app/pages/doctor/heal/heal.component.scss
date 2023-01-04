@@ -17,3 +17,6 @@ table{
 ul{
     list-style: none;
 }
+::ng-deep.mat-radio-button{
+    padding: 0 5px;
+}

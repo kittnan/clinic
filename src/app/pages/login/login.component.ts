@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/api/login.service';
+import { ToastService } from 'src/app/toast/toast.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,7 +11,11 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private _router: Router, private $login: LoginService) {}
+  constructor(
+    private _router: Router,
+     private $login: LoginService,
+     private _toast:ToastService
+     ) {}
   loginForm = new FormGroup({
     username: new FormControl<string | null>(null, Validators.required),
     password: new FormControl(null, Validators.required),
@@ -31,10 +36,10 @@ export class LoginComponent implements OnInit {
       const userLogin = JSON.stringify(resLogin[0]);
       localStorage.setItem('userLogin', userLogin);
       localStorage.setItem('access', access.toString());
-      Swal.fire('SUCCESS', '', 'success');
+      this._toast.open('success','Signed in successfully')
       setTimeout(() => {
         location.href = '/' + access;
-      }, 1000);
+      }, 2000);
       // this._router.navigate([access]);
     } else {
       Swal.fire('login fail something it wrong', '', 'error');
