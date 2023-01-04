@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { MemberHttpService } from 'src/app/api/member-http.service';
@@ -10,18 +10,22 @@ import { MemberHttpService } from 'src/app/api/member-http.service';
 })
 export class InputQueueComponent implements OnInit {
 
+  @Input() date:any
+  @Input() time:any
+  @Input() doctor:any
   @Output() dataChange :EventEmitter<any> = new EventEmitter()
-  date:any
-  time:any
   start :any
-
   doctorList:any[] =[]
-  doctor:any
   constructor(
     private $member: MemberHttpService
   ) {}
 
   async ngOnInit(): Promise<void> {
+    console.log(this.date);
+    
+    // this.date = this.date? this.date : new Date()
+    // this.time = temp
+    
     this.doctorList = await this.$member.getDoctor().toPromise()
   }
 

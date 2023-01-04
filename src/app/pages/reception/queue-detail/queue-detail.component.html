@@ -9,7 +9,7 @@
   <div fxFlex="80" class="box" fxLayoutAlign="center stretch" fxLayout="row wrap">
     <mat-form-field fxFlex="100" appearance="fill">
       <mat-label>สถานะ</mat-label>
-      <mat-select [(ngModel)]="selectedStatus">
+      <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onChangeStatus()">
         <mat-option *ngFor="let status of listStatus" [value]="status.value">
           {{ status.name }}
         </mat-option>
@@ -18,6 +18,9 @@
 
     <app-input-queue
     fxFlex="100"
+    [date]="date"
+    [time]="time"
+    [doctor]="queueForm.value.doctorId"
     (dataChange)="emitQueue($event)"
   ></app-input-queue>
 
