@@ -1,4 +1,4 @@
-<div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap" class="box">
+<div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap" class="">
   <h4 fxFlex="100" for="">QUEUE SEARCH</h4>
   <mat-form-field fxFlex="33" appearance="fill">
     <mat-label>SELECT RANGE</mat-label>
@@ -93,6 +93,45 @@
           <th mat-header-cell *matHeaderCellDef>หมอ</th>
           <td mat-cell *matCellDef="let element">{{ element.doctorName }}</td>
         </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>สถานะ</th>
+          <td mat-cell *matCellDef="let element">
+        
+            {{ htmlStatus(element.status) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button color="primary" [disabled]="element.status!='waitConfirm'" (click)="onApprove(element)">
+              
+              ยืนยันคิว
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="multiAction">
+          <th mat-header-cell *matHeaderCellDef>เมนู</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" (click)="onClickMenu(element)">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onNext()">
+            <span>เลื่อนนัด</span>
+          </button>
+          <button mat-menu-item (click)="onCancel()" >
+            <span>ยกเลิกนัด</span>
+          </button>
+          <button mat-menu-item (click)="onLost()">
+            <span>ไม่มานัด</span>
+          </button>
+        </mat-menu>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

@@ -44,8 +44,9 @@ export class QueueDetailComponent implements OnInit {
     startDate: new FormControl(null, Validators.required),
     endDate: new FormControl(null),
     updateBy: new FormControl(null, Validators.required),
-    status: new FormControl(null, Validators.required),
+    status: new FormControl('', Validators.required),
   });
+  prevQueue:any
   date: any;
   time: any;
   constructor(
@@ -63,6 +64,8 @@ export class QueueDetailComponent implements OnInit {
           params['userId']
         );
         const customer = await this.$customer.getId(http_param).toPromise();
+        console.log(customer);
+        
         this.customer = customer[0];
         const param: HttpParams = new HttpParams().set(
           'customerId',
@@ -84,20 +87,19 @@ export class QueueDetailComponent implements OnInit {
           ];
         }
 
-
         this.queueForm.patchValue({ ...queue[0] });
 
         if (queue && queue.length !== 0) {
           this.date = this.queueForm.value.startDate;
+          this.prevQueue = this.queueForm.value
           const temp = moment(this.date).format('HH:mm');
-          this.time = temp
-          console.log(this.date,this.time);
-          
+          this.time = temp;
+          console.log(this.date, this.time);
         } else {
           this.date = new Date();
           const temp = moment(this.date).format('HH:mm');
-          this.time = temp
-          console.log(this.date,this.time);
+          this.time = temp;
+          console.log(this.date, this.time);
         }
         this.userLogin = localStorage.getItem('userLogin');
         this.userLogin = JSON.parse(this.userLogin);
@@ -133,37 +135,55 @@ export class QueueDetailComponent implements OnInit {
     console.log(this.queueForm.value);
   }
 
-  submit() {
+  async submit() {
     console.log(this.queueForm.value);
 
-    if (this.queueForm.value._id) {
-      this.update();
+    if (this.selectedStatus == 'next') {
+
+      this.prevQueue.status = 'next'
+      await this.$queue
+        .update(this.prevQueue._id, this.prevQueue)
+        .toPromise();
+
+      this.queueForm.patchValue({
+        status: 'waitConfirm',
+      });
+      const body = this.queueForm.value;
+      delete body._id;
+      await this.$queue.add(body).toPromise();
+      Swal.fire('SUCCESS', '', 'success');
+      setTimeout(() => {
+        this._router.navigate(['reception/queue']);
+      }, 1000);
     } else {
-      this.create();
+      if (this.queueForm.value._id) {
+        this.update(this.queueForm.value._id, this.queueForm.value);
+      } else {
+        this.create(this.queueForm.value);
+      }
     }
   }
-  update() {
-    this.$queue.update(this.queueForm.value._id,this.queueForm.value).subscribe(res=>{
+  update(id: any, value: any) {
+    this.$queue.update(id, value).subscribe((res) => {
       console.log(res);
-      if(res && res.acknowledged){
+      if (res && res.acknowledged) {
         Swal.fire('SUCCESS', '', 'success');
         setTimeout(() => {
-         this._router.navigate(['reception/queue']);
-       }, 1000);
-      }else{
-
+          this._router.navigate(['reception/queue']);
+        }, 1000);
+      } else {
       }
-    })
+    });
   }
-  create() {
-    const body = this.queueForm.value;
+  create(value: any) {
+    const body = value;
     delete body._id;
     this.$queue.add(body).subscribe((res) => {
       if (res && !res.error && res.length > 0) {
         Swal.fire('SUCCESS', '', 'success');
         setTimeout(() => {
-         this._router.navigate(['reception/queue']);
-       }, 1000);
+          this._router.navigate(['reception/queue']);
+        }, 1000);
       } else {
         Swal.fire(`มีคิว ${res.data[0].customerName} อยู่แล้ว`, '', 'error');
       }

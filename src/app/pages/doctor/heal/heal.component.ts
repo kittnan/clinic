@@ -25,6 +25,8 @@ export class HealComponent implements OnInit {
 
   nextMeetStatus = true
   nextMeet :any
+
+  prevHeal:any
   
   constructor(
     private _route: ActivatedRoute,
@@ -57,6 +59,24 @@ export class HealComponent implements OnInit {
         );
         this.queue = await this.$queue.get(http_param).toPromise();
       }
+
+      if (params && params['edit']) {
+       console.log(params['edit']);
+       if(params['edit']=='true'){
+        const param = new HttpParams().set('customerId',this.customer[0]._id)
+        const heal = await this.$historyHeal.customerId(param).toPromise()
+        console.log(heal);
+        this.prevHeal = heal
+        this.healList = heal[0].healList
+        this.sideList = heal[0].sideList
+        this.description = heal[0].description
+        console.log(this.queue);
+        if(this.queue[0].status =='healed')this.nextMeetStatus = true
+        if(this.queue[0].status =='finish')this.nextMeetStatus = false
+       }
+      }
+
+
     });
 
     this.getCheckupList();
@@ -101,9 +121,41 @@ export class HealComponent implements OnInit {
       showCancelButton: true,
     }).then((value: SweetAlertResult) => {
       if (value.isConfirmed) {
-        this.submit();
+        if(this.prevHeal){
+          this.update()
+        }else{
+          this.submit();
+        }
       }
     });
+  }
+
+  async update(){
+    const body = {
+      ...this.prevHeal[0],
+      healList: this.healList,
+      sideList: this.sideList,
+      description: this.description,
+    };
+    await this.$historyHeal.update(body._id,body).toPromise()
+    
+    const updateQueueForm = {
+      ...this.queue[0],
+      endDate: new Date(),
+      status:true
+    }
+    if(this.nextMeetStatus){
+      updateQueueForm.status = 'healed'
+        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
+    }else{
+      updateQueueForm.status = 'finish'
+        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
+    }
+    Swal.fire('SUCCESS','','success')
+    setTimeout(() => {
+      this._router.navigate(['/doctor'])
+    }, 500);
+
   }
 
   async submit() {
@@ -131,31 +183,21 @@ export class HealComponent implements OnInit {
     arr.push(
       await this.$historyHeal.add(insertForm).toPromise()
     )
-    arr.push(
-      await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
-    )
+  
 
     if(this.nextMeetStatus){
+      updateQueueForm.status = 'healed'
       arr.push(
-        await this.$customer.update(this.customer[0]._id,{
-          nextMeet:{
-            status:true,
-            date:null
-          }
-        }).toPromise()
+        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
       )
     }else{
+      updateQueueForm.status = 'finish'
       arr.push(
-        await this.$customer.update(this.customer[0]._id,{
-          nextMeet:{
-            status:false,
-            date:null
-
-          }
-        }).toPromise()
+        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
       )
     }
 
+    
     
 
     Promise.all(arr).then((value:any[])=>{

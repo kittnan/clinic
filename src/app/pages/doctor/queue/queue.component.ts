@@ -22,6 +22,7 @@ export class QueueComponent implements OnInit {
     'customerName',
     'doctorName',
     'startDate',
+    'status',
     'action',
   ]
   dataSource!: MatTableDataSource<any>;
@@ -72,12 +73,34 @@ export class QueueComponent implements OnInit {
     }
   }
 
+  htmlStatus(item:any){
+    if(item.status=='waitConfirm') return 'รอยืนยัน'
+    if(item.status=='waitDoctor') return 'รอตรวจ'
+    if(item.status=='next') return 'เลื่อนนัด'
+    if(item.status=='cancel') return 'ยกเลิกนัด'
+    if(item.status=='lost') return 'ไม่มานัด'
+    if(item.status=='healed') return 'รักษาสำเร็จ'
+    if(item.status=='finish') return 'สำเร็จ'
+    return ''
+  }
+
   toLink(item:any){
     console.log(item);
     this._router.navigate(['doctor/heal'], {
       queryParams: {
         customerId: item.customerId,
-        queueId:item._id
+        queueId:item._id,
+        edit:false
+      },
+    });
+  }
+
+  onEditHeal(item:any){
+    this._router.navigate(['doctor/heal'], {
+      queryParams: {
+        customerId: item.customerId,
+        queueId:item._id,
+        edit: true
       },
     });
   }

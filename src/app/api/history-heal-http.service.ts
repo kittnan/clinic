@@ -22,6 +22,11 @@ export class HistoryHealHttpService {
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${this.URL}/${this.sub}/update/` + id, data);
   }
+
+  customerId(param:HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/customerId`,{params:param});
+  }
+
   // queueDay(param:HttpParams): Observable<any> {
   //   return this.http.get(`${this.URL}/${this.sub}/day`,{params:param});
   // }
