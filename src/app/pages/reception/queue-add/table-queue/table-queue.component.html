@@ -105,9 +105,12 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button color="primary" [disabled]="element.status!='waitConfirm'" (click)="onApprove(element)">
-              
+            <button *ngIf="element.status=='waitConfirm'" mat-flat-button color="primary" [disabled]="element.status!='waitConfirm'" (click)="onApprove(element)">
               ยืนยันคิว
+            </button>
+            <button *ngIf="element.status=='healed'" mat-flat-button color="primary"  (click)="onNextNew(element)">
+              
+              นัดครั้งหน้า
             </button>
           </td>
         </ng-container>

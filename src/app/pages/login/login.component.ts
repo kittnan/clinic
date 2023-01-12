@@ -20,12 +20,13 @@ export class LoginComponent implements OnInit {
     username: new FormControl<string | null>(null, Validators.required),
     password: new FormControl(null, Validators.required),
   });
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const login = localStorage.getItem('userLogin')
     if(login){
-      sessionStorage.clear();
-      localStorage.clear()
-      location.reload()
+      const json = JSON.parse(login) 
+      const access :any= await this.access(json.position);
+      location.href = '/' + access;
+
     }
   }
 

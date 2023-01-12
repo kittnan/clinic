@@ -18,12 +18,12 @@ export class QueueDetailComponent implements OnInit {
   selectedStatus: any = null;
   listStatus: any[] = [
     {
-      name: 'รอตรวจ',
-      value: 'waitDoctor',
+      name: 'นัดครั้งหน้า',
+      value: 'next',
     },
     {
-      name: 'เลื่อนนัด',
-      value: 'next',
+      name: 'รอตรวจ',
+      value: 'waitDoctor',
     },
     {
       name: 'ยกเลิก',
@@ -49,6 +49,8 @@ export class QueueDetailComponent implements OnInit {
   prevQueue:any
   date: any;
   time: any;
+  min:any
+  max:any
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
@@ -64,7 +66,6 @@ export class QueueDetailComponent implements OnInit {
           params['userId']
         );
         const customer = await this.$customer.getId(http_param).toPromise();
-        console.log(customer);
         
         this.customer = customer[0];
         const param: HttpParams = new HttpParams().set(
@@ -72,7 +73,6 @@ export class QueueDetailComponent implements OnInit {
           this.customer._id
         );
         const queue = await this.$queue.queueDayCustomer(param).toPromise();
-        console.log(queue);
 
         if (queue && queue.length === 0) {
           this.listStatus = [
@@ -94,12 +94,10 @@ export class QueueDetailComponent implements OnInit {
           this.prevQueue = this.queueForm.value
           const temp = moment(this.date).format('HH:mm');
           this.time = temp;
-          console.log(this.date, this.time);
         } else {
           this.date = new Date();
           const temp = moment(this.date).format('HH:mm');
           this.time = temp;
-          console.log(this.date, this.time);
         }
         this.userLogin = localStorage.getItem('userLogin');
         this.userLogin = JSON.parse(this.userLogin);
@@ -121,29 +119,39 @@ export class QueueDetailComponent implements OnInit {
     this.queueForm.patchValue({
       status: this.selectedStatus,
     });
-    console.log(this.selectedStatus);
-    if (this.selectedStatus == 'waitDoctor' && !this.queueForm.value._id) {
+    if (this.selectedStatus == 'waitConfirm') {
+        this.min = new Date(moment().add(1,'day').toString())
+        this.date = this.min
+        this.max = null
+    }
+    if (this.selectedStatus == 'waitDoctor') {
+        this.min = new Date()
+        this.max = new Date()
+        this.date = this.min
+        
     }
   }
 
   emitQueue(e: any) {
-    console.log(e);
 
     this.queueForm.patchValue({
       ...e,
     });
-    console.log(this.queueForm.value);
   }
 
   async submit() {
-    console.log(this.queueForm.value);
 
     if (this.selectedStatus == 'next') {
 
-      this.prevQueue.status = 'next'
+      if(this.prevQueue.status !='healed'){
+        this.prevQueue.status = 'next'
+      }else{
+        this.prevQueue.status = 'finish'
+      }
       await this.$queue
         .update(this.prevQueue._id, this.prevQueue)
         .toPromise();
+     
 
       this.queueForm.patchValue({
         status: 'waitConfirm',
@@ -165,7 +173,6 @@ export class QueueDetailComponent implements OnInit {
   }
   update(id: any, value: any) {
     this.$queue.update(id, value).subscribe((res) => {
-      console.log(res);
       if (res && res.acknowledged) {
         Swal.fire('SUCCESS', '', 'success');
         setTimeout(() => {

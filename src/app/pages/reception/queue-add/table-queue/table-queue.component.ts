@@ -101,11 +101,13 @@ export class TableQueueComponent implements OnInit {
   }
 
   htmlStatus(status: any) {
-    if (status == 'waitConfirm') return 'รอยืนยัน';
-    if (status == 'waitDoctor') return 'รอตรวจ';
-    if (status == 'next') return 'เลื่อนนัด';
-    if (status == 'cancel') return 'ยกเลิกนัด';
-    if (status == 'lost') return 'ไม่มา';
+    if(status=='waitConfirm') return 'รอยืนยัน'
+    if(status=='waitDoctor') return 'รอตรวจ'
+    if(status=='next') return 'เลื่อนนัด'
+    if(status=='cancel') return 'ยกเลิกนัด'
+    if(status=='lost') return 'ไม่มานัด'
+    if(status=='healed') return 'รักษาสำเร็จ'
+    if(status=='finish') return 'สำเร็จ'
     return '';
   }
 
@@ -130,6 +132,22 @@ export class TableQueueComponent implements OnInit {
       showCancelButton: true,
     }).then(async (value: SweetAlertResult) => {
       if (value.isConfirmed) {
+        this._router.navigate(['reception/queue-detail'], {
+          queryParams: {
+            userId: this.selectedItem.customerId,
+          },
+        });
+      }
+    });
+  }
+  onNextNew(item:any) {
+    Swal.fire({
+      title: `ต้องการนัดครั้งหน้าหรือไม่ ?`,
+      icon: 'question',
+      showCancelButton: true,
+    }).then(async (value: SweetAlertResult) => {
+      if (value.isConfirmed) {
+        this.selectedItem  =item
         this._router.navigate(['reception/queue-detail'], {
           queryParams: {
             userId: this.selectedItem.customerId,

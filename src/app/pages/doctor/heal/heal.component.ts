@@ -26,7 +26,7 @@ export class HealComponent implements OnInit {
   nextMeetStatus = true
   nextMeet :any
 
-  prevHeal:any
+  prevHeal:any = null
   
   constructor(
     private _route: ActivatedRoute,
@@ -62,7 +62,7 @@ export class HealComponent implements OnInit {
 
       if (params && params['edit']) {
        console.log(params['edit']);
-       if(params['edit']=='true'){
+       if(params['edit']=='true' && params['edit']){
         const param = new HttpParams().set('customerId',this.customer[0]._id)
         const heal = await this.$historyHeal.customerId(param).toPromise()
         console.log(heal);
@@ -160,7 +160,7 @@ export class HealComponent implements OnInit {
 
   async submit() {
     const insertForm = {
-      customerId: this.customer._id,
+      customerId: this.customer[0]._id,
       customerName: `${this.customer[0].titleName}${this.customer[0].firstName} ${this.customer[0].lastName}`,
       doctorId: this.userLogin._id,
       doctorName: `${this.userLogin.titleName}${this.userLogin.firstName} ${this.userLogin.lastName}`,

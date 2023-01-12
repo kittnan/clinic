@@ -13,6 +13,8 @@ export class InputQueueComponent implements OnInit {
   @Input() date:any
   @Input() time:any
   @Input() doctor:any
+  @Input() min:any
+  @Input() max:any
   @Output() dataChange :EventEmitter<any> = new EventEmitter()
   start :any
   doctorList:any[] =[]

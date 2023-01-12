@@ -1,1 +1,86 @@
-<p>share-history-detail works!</p>
+<div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap">
+  <div fxFlex="100" class="example-action-buttons">
+    <button mat-button (click)="accordion.openAll()">เปิดทั้งหมด</button>
+    <button mat-button (click)="accordion.closeAll()">ปิดทั้งหมด</button>
+  </div>
+  <mat-accordion fxFlex="100" class="example-headers-align" multi>
+    <mat-expansion-panel *ngFor="let heal of healHistory; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          วันที่รักษา {{ heal.createdAt | date : "dd - MMMM - YYY, HH:mm" }}
+        </mat-panel-title>
+        <mat-panel-description>
+          หมอ: {{ heal.doctorName }}
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div>
+        <table style="width: 100%">
+          <thead>
+            <tr>
+              <th width="50%">หัวข้อที่รักษา</th>
+              <th width="50%">เรื่องที่รักษา</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of loopData(heal.healList); let i = index"
+              style="background-color: rgb(200, 252, 252)"
+            >
+              <td>
+                {{ item.group }}
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let list of item.items; let i = index">
+                    {{ list.name }}
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 20px">
+        <table style="width: 100%">
+          <thead>
+            <tr>
+              <th width="50%">ด้านที่รักษา</th>
+              <th width="50%">ด้าน</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of loopData(heal.sideList); let i = index"
+              style="background-color: rgb(214, 214, 214)"
+            >
+              <td>
+                {{ item.group }}
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let list of item.items; let i = index">
+                    {{ list.name }}
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top: 20px">
+          <mat-form-field fxFlex="100" appearance="legacy">
+            <mat-label>รายละเอียดเพิ่มเติม</mat-label>
+            <textarea
+              [disabled]="true"
+              matInput
+              [value]="heal.description"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
