@@ -23,19 +23,19 @@ export class HealComponent implements OnInit {
   userLogin: any;
   queue: any;
 
-  nextMeetStatus = true
-  nextMeet :any
+  nextMeetStatus = true;
+  nextMeet: any;
 
-  prevHeal:any = null
-  
+  prevHeal: any = null;
+
   constructor(
     private _route: ActivatedRoute,
-    private _router:Router,
+    private _router: Router,
     private $customer: CustomerHttpService,
     private $checkup: CheckupHttpService,
     private $historyHeal: HistoryHealHttpService,
     private $queue: QueueHttpService,
-    private _toast:ToastService
+    private _toast: ToastService
   ) {
     let session: any = localStorage.getItem('userLogin');
     this.userLogin = JSON.parse(session);
@@ -50,7 +50,6 @@ export class HealComponent implements OnInit {
         );
         this.customer = await this.$customer.getId(http_param).toPromise();
         console.log(this.customer);
-        
       }
       if (params && params['queueId']) {
         const http_param: HttpParams = new HttpParams().set(
@@ -61,22 +60,23 @@ export class HealComponent implements OnInit {
       }
 
       if (params && params['edit']) {
-       console.log(params['edit']);
-       if(params['edit']=='true' && params['edit']){
-        const param = new HttpParams().set('customerId',this.customer[0]._id)
-        const heal = await this.$historyHeal.customerId(param).toPromise()
-        console.log(heal);
-        this.prevHeal = heal
-        this.healList = heal[0].healList
-        this.sideList = heal[0].sideList
-        this.description = heal[0].description
-        console.log(this.queue);
-        if(this.queue[0].status =='healed')this.nextMeetStatus = true
-        if(this.queue[0].status =='finish')this.nextMeetStatus = false
-       }
+        console.log(params['edit']);
+        if (params['edit'] == 'true' && params['edit']) {
+          const param = new HttpParams().set(
+            'customerId',
+            this.customer[0]._id
+          );
+          const heal = await this.$historyHeal.customerId(param).toPromise();
+          console.log(heal);
+          this.prevHeal = heal;
+          this.healList = heal[0].healList;
+          this.sideList = heal[0].sideList;
+          this.description = heal[0].description;
+          console.log(this.queue);
+          if (this.queue[0].status == 'healed') this.nextMeetStatus = true;
+          if (this.queue[0].status == 'finish') this.nextMeetStatus = false;
+        }
       }
-
-
     });
 
     this.getCheckupList();
@@ -121,41 +121,57 @@ export class HealComponent implements OnInit {
       showCancelButton: true,
     }).then((value: SweetAlertResult) => {
       if (value.isConfirmed) {
-        if(this.prevHeal){
-          this.update()
-        }else{
+        if (this.prevHeal) {
+          this.update();
+        } else {
           this.submit();
         }
       }
     });
   }
 
-  async update(){
+  async update() {
     const body = {
       ...this.prevHeal[0],
       healList: this.healList,
       sideList: this.sideList,
       description: this.description,
     };
-    await this.$historyHeal.update(body._id,body).toPromise()
-    
+    await this.$historyHeal.update(body._id, body).toPromise();
+
     const updateQueueForm = {
       ...this.queue[0],
       endDate: new Date(),
-      status:true
+      status: true,
+    };
+    if (this.nextMeetStatus) {
+      updateQueueForm.status = 'healed';
+      await this.$queue
+        .update(updateQueueForm._id, updateQueueForm)
+        .toPromise();
+    } else {
+      updateQueueForm.status = 'finish';
+      await this.$queue
+        .update(updateQueueForm._id, updateQueueForm)
+        .toPromise();
     }
-    if(this.nextMeetStatus){
-      updateQueueForm.status = 'healed'
-        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
-    }else{
-      updateQueueForm.status = 'finish'
-        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
-    }
-    Swal.fire('SUCCESS','','success')
+    Swal.fire('SUCCESS', '', 'success');
     setTimeout(() => {
-      this._router.navigate(['/doctor'])
+      this._router.navigate(['/doctor']);
     }, 500);
+  }
 
+  validButton() {
+    if (
+      this.healList &&
+      this.sideList &&
+      this.healList.find((h: any) => h.checked) &&
+      this.healList.find((h: any) => h.items.find((i: any) => i.checked)) &&
+      this.sideList.find((h: any) => h.checked) &&
+      this.sideList.find((h: any) => h.items.find((i: any) => i.checked))
+    )
+      return false;
+    return true;
   }
 
   async submit() {
@@ -175,38 +191,35 @@ export class HealComponent implements OnInit {
     const updateQueueForm = {
       ...this.queue[0],
       endDate: new Date(),
-      status:true
-    }
+      status: true,
+    };
     // const resUpdateQueue = await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
     // console.log();
-    let arr:any[] =[]
-    arr.push(
-      await this.$historyHeal.add(insertForm).toPromise()
-    )
-  
+    let arr: any[] = [];
+    arr.push(await this.$historyHeal.add(insertForm).toPromise());
 
-    if(this.nextMeetStatus){
-      updateQueueForm.status = 'healed'
+    if (this.nextMeetStatus) {
+      updateQueueForm.status = 'healed';
       arr.push(
-        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
-      )
-    }else{
-      updateQueueForm.status = 'finish'
+        await this.$queue
+          .update(updateQueueForm._id, updateQueueForm)
+          .toPromise()
+      );
+    } else {
+      updateQueueForm.status = 'finish';
       arr.push(
-        await this.$queue.update(updateQueueForm._id,updateQueueForm).toPromise()
-      )
+        await this.$queue
+          .update(updateQueueForm._id, updateQueueForm)
+          .toPromise()
+      );
     }
 
-    
-    
-
-    Promise.all(arr).then((value:any[])=>{
+    Promise.all(arr).then((value: any[]) => {
       console.log(value);
-      Swal.fire('SUCCESS','','success')
+      Swal.fire('SUCCESS', '', 'success');
       setTimeout(() => {
-        this._router.navigate(['/doctor'])
+        this._router.navigate(['/doctor']);
       }, 500);
-    })
-    
+    });
   }
 }

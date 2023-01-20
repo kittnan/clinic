@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CheckupHttpService } from 'src/app/api/checkup-http.service';
 
 @Component({
@@ -8,14 +9,23 @@ import { CheckupHttpService } from 'src/app/api/checkup-http.service';
 })
 export class MasterComponent implements OnInit {
   masters = ['checkHeal'];
- 
+
   master: any;
 
-  constructor(
-  ){
+  constructor(private _loading: NgxUiLoaderService) {}
 
+  ngOnInit(): void {
+    this._loading.start();
+    this.master = 'checkHeal';
   }
-  ngOnInit(): void {}
-
-  
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    this.stopLoading();
+  }
+  stopLoading() {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
+  }
 }

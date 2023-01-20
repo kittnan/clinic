@@ -1,8 +1,14 @@
 <div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap">
-  <div fxFlex="100" class="example-action-buttons">
+  <div
+    *ngIf="healHistory.length !== 0"
+    fxFlex="100"
+    class="example-action-buttons"
+  >
     <button mat-button (click)="accordion.openAll()">เปิดทั้งหมด</button>
     <button mat-button (click)="accordion.closeAll()">ปิดทั้งหมด</button>
   </div>
+
+  <p *ngIf="healHistory.length === 0">ไม่มีประวัติการรักษา</p>
   <mat-accordion fxFlex="100" class="example-headers-align" multi>
     <mat-expansion-panel *ngFor="let heal of healHistory; let i = index">
       <mat-expansion-panel-header>

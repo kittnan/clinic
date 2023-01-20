@@ -1,14 +1,51 @@
-<mat-toolbar
-  color="primary"
-  fxLayout="row"
-  fxLayoutAlign="space-between center"
-  *ngIf="loginStatus"
->
-  <span>
-    <span class="title-head">
-      {{title |uppercase}}
-    </span>
-    <ng-container *ngFor="let item of routerItems; let i=index">
+<ng-container *ngIf="loginStatus">
+  <div class="container">
+    <mat-toolbar color="primary" class="example-toolbar">
+      <button mat-icon-button (click)="snav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <!-- <img
+      src="assets/oven.png"
+      alt=""
+      style="width: 50px; height: 50px; margin: auto"
+    /> -->
+      <h1 class="example-app-name">
+        {{ title | uppercase }}
+      </h1>
+      <span class="example-spacer"></span>
+
+      <div style="font-size: 15px; letter-spacing: 1px">
+        <button
+          mat-icon-button
+          class="example-icon favorite-icon"
+          aria-label="Example icon-button with heart icon"
+        >
+          <span class="material-icons-outlined"> account_circle </span>
+        </button>
+        <span>{{ userLogin.firstName }} {{ userLogin.lastName }}</span>
+        <button
+          (click)="logout()"
+          mat-icon-button
+          class="example-icon"
+          style="margin-left: 5px"
+          aria-label="Example icon-button with share icon"
+        >
+          <span class="material-icons-outlined"> logout </span>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <!-- <mat-toolbar
+    color="primary"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    *ngIf="loginStatus"
+  >
+    <span>
+      <span class="title-head">
+        {{ title | uppercase }}
+      </span>
+      <ng-container *ngFor="let item of routerItems; let i=index">
       <button mat-button routerLink="{{item.path}}" >
         <mat-icon class="mat-20" style="margin-right: 5px;">
           {{item.icon}}
@@ -18,23 +55,78 @@
           </span>
       </button>
     </ng-container>
-    
-  </span>
-  
+    </span>
 
-  <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-    <button mat-button *ngIf="loginStatus" (click)="logout()">
-      <mat-icon>exit_to_app</mat-icon>
-      Logout
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+      <button mat-button *ngIf="loginStatus" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Logout
+      </button>
+    </div>
+
+    <button
+      mat-button
+      [mat-menu-trigger-for]="menu"
+      fxHide="false"
+      fxHide.gt-sm
+    >
+      <mat-icon>menu</mat-icon>
     </button>
+  </mat-toolbar> -->
+
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav #snav mode="side" opened="true">
+        <mat-nav-list>
+          <mat-accordion *ngFor="let side of sideItems; let i = index">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="material-icons-outlined">
+                    {{ side.icon }}
+                  </span>
+                  <span class="side-title-head">{{
+                    side.title | uppercase
+                  }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ul style="list-style: none; padding: 0">
+                <li *ngFor="let item of side.items; let i = index">
+                  <a
+                    mat-list-item
+                    routerLinkActive="active"
+                    [routerLink]="item.path"
+                  >
+                    <span class="material-icons-outlined">
+                      {{ item.icon }}
+                    </span>
+                    <span class="side-title-sub">
+                      {{ item.title | uppercase }}
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-nav-list>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </div>
+  <footer *ngIf="loginStatus">
+    <p>Services Tel: 08000000 About: XXXXX © 2023</p>
+  </footer>
+</ng-container>
 
+<ng-container *ngIf="!loginStatus">
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>
 
-  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
-    <mat-icon>menu</mat-icon>
-  </button>
-</mat-toolbar>
-<mat-menu x-position="before" #menu="matMenu">
+<!-- <mat-menu x-position="before" #menu="matMenu">
   <button mat-menu-item routerLink="/">
     <mat-icon>home</mat-icon>
     Home
@@ -47,5 +139,5 @@
     <mat-icon>exit_to_app</mat-icon>
     Logout
   </button>
-</mat-menu>
-<router-outlet></router-outlet>
+</mat-menu> -->
+<ngx-ui-loader></ngx-ui-loader>

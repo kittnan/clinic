@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 
 @Component({
   selector: 'app-queue-detail',
@@ -16,24 +16,7 @@ export class QueueDetailComponent implements OnInit {
   userLogin: any;
   customer: any;
   selectedStatus: any = null;
-  listStatus: any[] = [
-    {
-      name: 'นัดครั้งหน้า',
-      value: 'next',
-    },
-    {
-      name: 'รอตรวจ',
-      value: 'waitDoctor',
-    },
-    {
-      name: 'ยกเลิก',
-      value: 'cancel',
-    },
-    {
-      name: 'ไม่มา',
-      value: 'lost',
-    },
-  ];
+  listStatus: any[] = [];
 
   queueForm = new FormGroup({
     _id: new FormControl(null),
@@ -46,11 +29,11 @@ export class QueueDetailComponent implements OnInit {
     updateBy: new FormControl(null, Validators.required),
     status: new FormControl('', Validators.required),
   });
-  prevQueue:any
+  prevQueue: any;
   date: any;
   time: any;
-  min:any
-  max:any
+  min: any;
+  max: any;
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
@@ -66,32 +49,102 @@ export class QueueDetailComponent implements OnInit {
           params['userId']
         );
         const customer = await this.$customer.getId(http_param).toPromise();
-        
+
         this.customer = customer[0];
         const param: HttpParams = new HttpParams().set(
           'customerId',
           this.customer._id
         );
         const queue = await this.$queue.queueDayCustomer(param).toPromise();
+        this.prevQueue = queue;
+        const queueLast = queue?.length > 0 ? queue[queue.length - 1] : null;
 
-        if (queue && queue.length === 0) {
+        if (queueLast && queueLast.status == 'healed') {
           this.listStatus = [
             {
-              name: 'นัดคิววันนี้',
-              value: 'waitDoctor',
-            },
-            {
               name: 'นัดคิวครั้งถัดไป',
-              value: 'waitConfirm',
+              value: 'next',
             },
           ];
+        } else {
+          if (queue && queue?.length > 0) {
+            if (
+              (queueLast && queueLast.status === 'finish') ||
+              queueLast.status === 'cancel' ||
+              queueLast.status === 'lost'
+            ) {
+              this.listStatus = [
+                {
+                  name: 'นัดคิววันนี้',
+                  value: 'waitDoctor',
+                },
+                {
+                  name: 'นัดคิวครั้งถัดไป',
+                  value: 'next',
+                },
+              ];
+            } else {
+              if (queueLast && queueLast.status === 'waitConfirm') {
+                this.listStatus = [
+                  {
+                    name: 'ยืนยันคิว',
+                    value: 'waitDoctor',
+                  },
+                  {
+                    name: 'นัดคิวครั้งถัดไป',
+                    value: 'next',
+                  },
+                  {
+                    name: 'ยกเลิก',
+                    value: 'cancel',
+                  },
+                  {
+                    name: 'ไม่มา',
+                    value: 'lost',
+                  },
+                ];
+              }
+              if (queueLast && queueLast.status === 'waitDoctor') {
+                this.listStatus = [
+                  {
+                    name: 'นัดคิวครั้งถัดไป',
+                    value: 'next',
+                  },
+                  {
+                    name: 'ยกเลิก',
+                    value: 'cancel',
+                  },
+                  {
+                    name: 'ไม่มา',
+                    value: 'lost',
+                  },
+                ];
+              }
+            }
+          } else {
+            this.listStatus = [
+              {
+                name: 'นัดคิววันนี้',
+                value: 'waitDoctor',
+              },
+              {
+                name: 'นัดคิวครั้งถัดไป',
+                value: 'next',
+              },
+            ];
+          }
         }
+
+        // if (queue && queue.length === 0) {
+        // }else{
+        //   this.listStatus
+        // }
 
         this.queueForm.patchValue({ ...queue[0] });
 
         if (queue && queue.length !== 0) {
           this.date = this.queueForm.value.startDate;
-          this.prevQueue = this.queueForm.value
+          this.prevQueue = this.queueForm.value;
           const temp = moment(this.date).format('HH:mm');
           this.time = temp;
         } else {
@@ -120,56 +173,59 @@ export class QueueDetailComponent implements OnInit {
       status: this.selectedStatus,
     });
     if (this.selectedStatus == 'waitConfirm') {
-        this.min = new Date(moment().add(1,'day').toString())
-        this.date = this.min
-        this.max = null
+      this.min = new Date(moment().add(1, 'day').toString());
+      this.date = this.min;
+      this.max = null;
     }
     if (this.selectedStatus == 'waitDoctor') {
-        this.min = new Date()
-        this.max = new Date()
-        this.date = this.min
-        
+      this.min = new Date();
+      this.max = new Date();
+      this.date = this.min;
     }
   }
 
   emitQueue(e: any) {
-
     this.queueForm.patchValue({
       ...e,
     });
   }
 
-  async submit() {
+  submit() {
+    Swal.fire({
+      title: `ต้องการบันทึกคิวหรือไม่?`,
+      icon: 'question',
+      showCancelButton: true,
+    }).then(async (value: SweetAlertResult) => {
+      if (value.isConfirmed) {
+        if (this.selectedStatus == 'next') {
+          if (this.prevQueue.status != 'healed') {
+            this.prevQueue.status = 'next';
+          } else {
+            this.prevQueue.status = 'finish';
+          }
+          await this.$queue
+            .update(this.prevQueue._id, this.prevQueue)
+            .toPromise();
 
-    if (this.selectedStatus == 'next') {
-
-      if(this.prevQueue.status !='healed'){
-        this.prevQueue.status = 'next'
-      }else{
-        this.prevQueue.status = 'finish'
+          this.queueForm.patchValue({
+            status: 'waitConfirm',
+          });
+          const body = this.queueForm.value;
+          delete body._id;
+          await this.$queue.add(body).toPromise();
+          Swal.fire('SUCCESS', '', 'success');
+          setTimeout(() => {
+            this._router.navigate(['reception/queue']);
+          }, 1000);
+        } else {
+          if (this.queueForm.value._id) {
+            this.update(this.queueForm.value._id, this.queueForm.value);
+          } else {
+            this.create(this.queueForm.value);
+          }
+        }
       }
-      await this.$queue
-        .update(this.prevQueue._id, this.prevQueue)
-        .toPromise();
-     
-
-      this.queueForm.patchValue({
-        status: 'waitConfirm',
-      });
-      const body = this.queueForm.value;
-      delete body._id;
-      await this.$queue.add(body).toPromise();
-      Swal.fire('SUCCESS', '', 'success');
-      setTimeout(() => {
-        this._router.navigate(['reception/queue']);
-      }, 1000);
-    } else {
-      if (this.queueForm.value._id) {
-        this.update(this.queueForm.value._id, this.queueForm.value);
-      } else {
-        this.create(this.queueForm.value);
-      }
-    }
+    });
   }
   update(id: any, value: any) {
     this.$queue.update(id, value).subscribe((res) => {

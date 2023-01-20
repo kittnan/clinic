@@ -6,10 +6,18 @@
     [customer]="customer"
   ></app-share-customer-detail>
   <app-share-history-detail class="box" fxFlex="80"></app-share-history-detail>
-  <div fxFlex="80" class="box" fxLayoutAlign="center stretch" fxLayout="row wrap">
+  <div
+    fxFlex="80"
+    class="box"
+    fxLayoutAlign="center stretch"
+    fxLayout="row wrap"
+  >
     <mat-form-field fxFlex="100" appearance="fill">
       <mat-label>สถานะ</mat-label>
-      <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onChangeStatus()">
+      <mat-select
+        [(ngModel)]="selectedStatus"
+        (ngModelChange)="onChangeStatus()"
+      >
         <mat-option *ngFor="let status of listStatus" [value]="status.value">
           {{ status.name }}
         </mat-option>
@@ -17,16 +25,18 @@
     </mat-form-field>
 
     <app-input-queue
-    fxFlex="100"
-    [min]="min"
-    [max]="max"
-    [date]="date"
-    [time]="time"
-    [doctor]="queueForm.value.doctorId"
-    (dataChange)="emitQueue($event)"
-  ></app-input-queue>
+      fxFlex="100"
+      [min]="min"
+      [max]="max"
+      [date]="date"
+      [time]="time"
+      [doctor]="queueForm.value.doctorId"
+      (dataChange)="emitQueue($event)"
+    ></app-input-queue>
 
+    {{ selectedStatus }}
     <button
+      [disabled]="queueForm.invalid || !selectedStatus"
       fxFlex="100"
       mat-raised-button
       color="primary"

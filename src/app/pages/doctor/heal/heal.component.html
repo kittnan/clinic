@@ -1,8 +1,11 @@
 <div fxFlex="100" fxLayoutAlign="center stretch" fxLayout="row wrap">
-
-  <app-share-customer-detail *ngIf="customer" class="box" fxFlex="80" [customer]="customer[0]"></app-share-customer-detail>
+  <app-share-customer-detail
+    *ngIf="customer"
+    class="box"
+    fxFlex="80"
+    [customer]="customer[0]"
+  ></app-share-customer-detail>
   <div
-   
     fxFlex="80"
     fxLayoutAlign="center stretch"
     fxLayout="row wrap"
@@ -104,6 +107,7 @@
     </div> -->
 
     <button
+      [disabled]="validButton()"
       fxFlex="100"
       mat-raised-button
       color="primary"

@@ -10,7 +10,7 @@ import { HistoryHealHttpService } from 'src/app/api/history-heal-http.service';
   styleUrls: ['./share-history-detail.component.scss'],
 })
 export class ShareHistoryDetailComponent implements OnInit {
-  healHistory: any;
+  healHistory: any = [];
   @ViewChild(MatAccordion) accordion!: MatAccordion;
   constructor(
     private route: ActivatedRoute,

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 interface RouterItems {
   path: any;
@@ -12,9 +15,27 @@ interface RouterItems {
 })
 export class AppComponent {
   title = 'dentist clinic';
-
+  userLogin: any = {};
   loginStatus: Boolean = false;
   routerItems!: RouterItems[];
+  sideItems: any[] = [];
+
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
+  constructor(
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    private _router: Router,
+    private _loading: NgxUiLoaderService
+  ) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+
+    const user: any = localStorage.getItem('userLogin');
+    this.userLogin = JSON.parse(user);
+  }
   ngOnInit(): void {
     const token = localStorage.getItem('userLogin');
     const access: any = localStorage.getItem('access');
@@ -28,55 +49,112 @@ export class AppComponent {
 
   setHeader(access: String) {
     if (access === 'admin') {
-      this.routerItems = [
+      this.sideItems = [
         {
-          path:'/admin/member',
-          icon:'group',
-          title:'member'
+          title: 'customer',
+          icon: 'feed',
+          items: [
+            {
+              path: '/admin/member',
+              icon: 'group',
+              title: 'member',
+            },
+            {
+              path: '/admin/customer',
+              icon: 'group',
+              title: 'customer',
+            },
+            {
+              path: '/admin/master',
+              icon: 'category',
+              title: 'master',
+            },
+          ],
         },
-        {
-          path:'/admin/customer',
-          icon:'group',
-          title:'customer'
-        },
-        {
-          path:'/admin/master',
-          icon:'category',
-          title:'master'
-        }
-      ]
+      ];
+
+      // this.routerItems = [
+      //   {
+      //     path:'/admin/member',
+      //     icon:'group',
+      //     title:'member'
+      //   },
+      //   {
+      //     path:'/admin/customer',
+      //     icon:'group',
+      //     title:'customer'
+      //   },
+      //   {
+      //     path:'/admin/master',
+      //     icon:'category',
+      //     title:'master'
+      //   }
+      // ]
     }
     if (access === 'reception') {
-      this.routerItems = [
-      
+      this.sideItems = [
         {
-          path:'/reception/customer',
-          icon:'group',
-          title:'customer'
+          title: 'customer',
+          icon: 'feed',
+          items: [
+            {
+              path: '/reception/customer',
+              icon: 'group',
+              title: 'customer',
+            },
+            {
+              path: '/reception/queue',
+              icon: 'badge',
+              title: 'queue',
+            },
+          ],
         },
-        {
-          path:'/reception/queue',
-          icon:'badge',
-          title:'queue'
-        },
-      
-      ]
+      ];
+
+      // this.routerItems = [
+
+      //   {
+      //     path:'/reception/customer',
+      //     icon:'group',
+      //     title:'customer'
+      //   },
+      //   {
+      //     path:'/reception/queue',
+      //     icon:'badge',
+      //     title:'queue'
+      //   },
+
+      // ]
     }
     if (access === 'doctor') {
-      this.routerItems = [
-      
-        // {
-        //   path:'/doctor/heal',
-        //   icon:'group',
-        //   title:'heal'
-        // },
+      this.sideItems = [
         {
-          path:'/doctor/queue',
-          icon:'badge',
-          title:'queue'
+          title: 'customer',
+          icon: 'feed',
+          items: [
+            {
+              path: '/doctor/queue',
+              icon: 'badge',
+              title: 'queue',
+            },
+          ],
         },
-      
-      ]
+      ];
+
+      // this.routerItems = [
+
+      //   // {
+      //   //   path:'/doctor/heal',
+      //   //   icon:'group',
+      //   //   title:'heal'
+      //   // },
+      //   {
+      //     path:'/doctor/queue',
+      //     icon:'badge',
+      //     title:'queue'
+      //   },
+
+      // ]
     }
   }
 

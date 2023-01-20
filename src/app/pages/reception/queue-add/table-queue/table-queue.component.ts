@@ -31,6 +31,7 @@ export class TableQueueComponent implements OnInit {
     'action',
     'multiAction',
   ];
+  menuList: any = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -54,10 +55,10 @@ export class TableQueueComponent implements OnInit {
   }
 
   async onSelectRange() {
-    const foo: any = await this.getQueue();
-    console.log(foo);
-
-    this.dataSource = new MatTableDataSource(foo);
+    const queues: any = await this.getQueue();
+    console.log(queues);
+    this.setMenu(queues);
+    this.dataSource = new MatTableDataSource(queues);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -95,19 +96,30 @@ export class TableQueueComponent implements OnInit {
     }
   }
 
+  setMenu(queues: any[]) {
+    this.menuList = queues.map((q: any) => {
+      if (q.status === 'waitDoctor') return ['เลื่อนนัด', 'ยกเลิกนัด'];
+      if (q.status === 'healed') return ['สำเร็จ'];
+      if (q.status === 'waitConfirm')
+        return ['เลื่อนนัด', 'ยกเลิกนัด', 'ไม่มานัด'];
+      return [];
+    });
+    console.log(this.menuList);
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   htmlStatus(status: any) {
-    if(status=='waitConfirm') return 'รอยืนยัน'
-    if(status=='waitDoctor') return 'รอตรวจ'
-    if(status=='next') return 'เลื่อนนัด'
-    if(status=='cancel') return 'ยกเลิกนัด'
-    if(status=='lost') return 'ไม่มานัด'
-    if(status=='healed') return 'รักษาสำเร็จ'
-    if(status=='finish') return 'สำเร็จ'
+    if (status == 'waitConfirm') return 'รอยืนยัน';
+    if (status == 'waitDoctor') return 'รอตรวจ';
+    if (status == 'next') return 'เลื่อนนัด';
+    if (status == 'cancel') return 'ยกเลิกนัด';
+    if (status == 'lost') return 'ไม่มานัด';
+    if (status == 'healed') return 'รักษาสำเร็จ';
+    if (status == 'finish') return 'สำเร็จ';
     return '';
   }
 
@@ -125,6 +137,13 @@ export class TableQueueComponent implements OnInit {
   onClickMenu(item: any) {
     this.selectedItem = item;
   }
+
+  onClickMenuList(list: string) {
+    if (list === 'เลื่อนนัด') this.onNext();
+    if (list === 'ยกเลิกนัด') this.onCancel();
+    if (list === 'สำเร็จ') this.onFinish();
+    if (list === 'ไม่มานัด') this.onLost();
+  }
   onNext() {
     Swal.fire({
       title: `ต้องการเลื่อนนัดหรือไม่ ?`,
@@ -140,14 +159,14 @@ export class TableQueueComponent implements OnInit {
       }
     });
   }
-  onNextNew(item:any) {
+  onNextNew(item: any) {
     Swal.fire({
       title: `ต้องการนัดครั้งหน้าหรือไม่ ?`,
       icon: 'question',
       showCancelButton: true,
     }).then(async (value: SweetAlertResult) => {
       if (value.isConfirmed) {
-        this.selectedItem  =item
+        this.selectedItem = item;
         this._router.navigate(['reception/queue-detail'], {
           queryParams: {
             userId: this.selectedItem.customerId,
@@ -173,8 +192,24 @@ export class TableQueueComponent implements OnInit {
       }
     });
   }
+  onFinish() {
+    Swal.fire({
+      title: `ต้องการบันทึกหรือไม่ ?`,
+      icon: 'question',
+      showCancelButton: true,
+    }).then(async (value: SweetAlertResult) => {
+      if (value.isConfirmed) {
+        const body = {
+          ...this.selectedItem,
+          status: 'finish',
+        };
+        await this.$queue.update(body._id, body).toPromise();
+        Swal.fire('SUCCESS', '', 'success');
+        this.onSelectRange();
+      }
+    });
+  }
   async onLost() {
-
     Swal.fire({
       title: `อัพเดทคนไข้ไม่มาตามนัด ?`,
       icon: 'question',
@@ -190,6 +225,5 @@ export class TableQueueComponent implements OnInit {
         this.onSelectRange();
       }
     });
-   
   }
 }

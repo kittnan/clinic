@@ -1,4 +1,54 @@
-<div fxLayout="row wrap" fxLayoutAlign="center stretch" class="container">
+<div class="container" fxLayout="row wrap" fxLayoutAlign="center center">
+  <div class="card">
+    <div class="card-head" fxLayout="row wrap" fxLayoutAlign="center center">
+      <div fxFlex="100" fxLayoutAlign="center center">
+        <span fxFlex="100" class="card-title2" fxLayoutAlign="center center">
+          CLINIC
+        </span>
+      </div>
+      <!-- <div fxFlex="100" fxLayoutAlign="center center">
+        <span fxFlex="100" class="card-title2" fxLayoutAlign="center center">
+          SYSTEM
+        </span>
+      </div> -->
+    </div>
+
+    <form
+      [formGroup]="loginForm"
+      (submit)="onLogin()"
+      class="card-body"
+      fxLayout="row wrap"
+      fxLayoutAlign="center center"
+    >
+      <mat-form-field fxFlex="100" appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="" formControlName="username" />
+      </mat-form-field>
+      <mat-form-field fxFlex="100" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder=""
+          formControlName="password"
+        />
+      </mat-form-field>
+
+      <div class="card-footer" fxLayoutAlign="center center">
+        <button
+          type="submit"
+          mat-raised-button
+          fxFlex="100"
+          style="margin-top: 10px"
+        >
+          LOGIN <span class="material-icons-outlined"> lock_open </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="container">
   <div fxFlex="30" fxLayout="column wrap" fxLayoutAlign="center stretch">
     <div
       fxFlex="40"
@@ -31,4 +81,4 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
