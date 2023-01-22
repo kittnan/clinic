@@ -119,7 +119,7 @@ export class DialogCustomerComponent implements OnInit {
       const resultFilter = this.tempShowFiles.filter((f: any) => f.date);
       return [...resultFilter, ...resUpload];
     }
-    return [];
+    return files;
   }
 
   addFormData(Files: FileList) {
