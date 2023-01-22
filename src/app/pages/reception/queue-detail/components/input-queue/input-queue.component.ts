@@ -9,42 +9,45 @@ import { MemberHttpService } from 'src/app/api/member-http.service';
   styleUrls: ['./input-queue.component.scss'],
 })
 export class InputQueueComponent implements OnInit {
-
-  @Input() date:any
-  @Input() time:any
-  @Input() doctor:any
-  @Input() min:any
-  @Input() max:any
-  @Output() dataChange :EventEmitter<any> = new EventEmitter()
-  start :any
-  doctorList:any[] =[]
-  constructor(
-    private $member: MemberHttpService
-  ) {}
+  @Input() date: any;
+  @Input() time: any;
+  @Input() doctor: any;
+  @Input() min: any;
+  @Input() max: any;
+  @Input() disable: any;
+  @Output() dataChange: EventEmitter<any> = new EventEmitter();
+  start: any;
+  doctorList: any[] = [];
+  constructor(private $member: MemberHttpService) {}
 
   async ngOnInit(): Promise<void> {
     console.log(this.date);
-    
+
     // this.date = this.date? this.date : new Date()
     // this.time = temp
-    
-    this.doctorList = await this.$member.getDoctor().toPromise()
+
+    this.doctorList = await this.$member.getDoctor().toPromise();
   }
 
-  genTime(){
-    const date = moment(this.date).format('YYYY-MM-DD')
-    this.start = moment(date + ' ' + this.time)
-    const doctorFind = this.doctorList.find((d:any)=>d._id==this.doctor)
-    let doctor 
-    if(doctorFind){
+  genTime() {
+    const date = moment(this.date).format('YYYY-MM-DD');
+    this.start = moment(date + ' ' + this.time);
+    const doctorFind = this.doctorList.find((d: any) => d._id == this.doctor);
+    let doctor;
+    if (doctorFind) {
       doctor = {
-        doctorId:doctorFind._id,
-        doctorName: `${doctorFind.titleName}${doctorFind.firstName} ${doctorFind.lastName}`
-      }
+        doctorId: doctorFind._id,
+        doctorName: `${doctorFind.titleName}${doctorFind.firstName} ${doctorFind.lastName}`,
+      };
     }
     this.dataChange.emit({
       ...doctor,
-      startDate:this.start.toDate()
-    })
+      startDate: this.start.toDate(),
+    });
+  }
+
+  htmlValidDisable(status: string) {
+    if (status === 'cancel' || status === 'lost') return true;
+    return false;
   }
 }

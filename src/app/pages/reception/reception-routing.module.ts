@@ -6,32 +6,31 @@ import { QueueDetailComponent } from './queue-detail/queue-detail.component';
 import { QueueComponent } from './queue/queue.component';
 
 const routes: Routes = [
- 
   {
-    path:'customer',
-    component:CustomerComponent
+    path: 'customer',
+    component: CustomerComponent,
   },
   {
-    path:'queue',
-    component:QueueComponent
+    path: 'queue',
+    component: QueueComponent,
   },
   {
-    path:'queue-add',
-    component:QueueAddComponent
+    path: 'queue-add',
+    component: QueueAddComponent,
   },
   {
-    path:'queue-detail',
-    component:QueueDetailComponent
+    path: 'queue-detail',
+    component: QueueDetailComponent,
   },
- 
+
   {
-    path:'',
-    pathMatch:'full',
-    redirectTo:'customer'
-  }
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'queue',
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ReceptionRoutingModule { }
+export class ReceptionRoutingModule {}

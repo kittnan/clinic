@@ -16,7 +16,7 @@ import { ShareHistoryDetailComponent } from './components/share-history-detail/s
     ShareCustomerComponent,
     DialogCustomerComponent,
     ShareCustomerDetailComponent,
-    ShareHistoryDetailComponent
+    ShareHistoryDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -26,12 +26,13 @@ import { ShareHistoryDetailComponent } from './components/share-history-detail/s
     // BrowserAnimationsModule,
     MaterialModule,
     NgIconsModule,
-    RouterModule
+    RouterModule,
   ],
-  exports: [ 
+  exports: [
     ShareCustomerComponent,
     ShareCustomerDetailComponent,
-    ShareHistoryDetailComponent
+    ShareHistoryDetailComponent,
   ],
+  providers: [],
 })
 export class ShareModule {}

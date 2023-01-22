@@ -5,11 +5,10 @@
     fxLayoutAlign="space-around stretch"
     fxLayout="row wrap"
     style="text-align: center"
-    
   >
-  <h1 fxFlex="100">
-    <strong>ข้อมูลคนไข้</strong>
-  </h1>
+    <h1 fxFlex="100">
+      <strong>ข้อมูลคนไข้</strong>
+    </h1>
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>CUSTOMER ID</mat-label>
       <input matInput [(ngModel)]="customer.customerId" [readonly]="true" />
@@ -20,12 +19,10 @@
       <input matInput placeholder="" [(ngModel)]="customer.idCard" />
     </mat-form-field>
 
-
     <mat-form-field fxFlex="40" appearance="legacy">
-        <mat-label>Title Name</mat-label>
-        <input matInput placeholder="" [(ngModel)]="customer.titleName" />
-      </mat-form-field>
-  
+      <mat-label>Title Name</mat-label>
+      <input matInput placeholder="" [(ngModel)]="customer.titleName" />
+    </mat-form-field>
 
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>FirstName</mat-label>
@@ -38,15 +35,14 @@
     </mat-form-field>
 
     <mat-form-field fxFlex="40" appearance="legacy">
-        <mat-label>Gender</mat-label>
-        <input matInput placeholder="" [(ngModel)]="customer.gender" />
-      </mat-form-field>
+      <mat-label>Gender</mat-label>
+      <input matInput placeholder="" [(ngModel)]="customer.gender" />
+    </mat-form-field>
 
     <mat-form-field fxFlex="40" appearance="legacy">
-        <mat-label>BIRTH DAY</mat-label>
-        <input matInput value="{{customer.birthDay |date:'dd/MM/YYYY'}}" />
-      </mat-form-field>
-  
+      <mat-label>BIRTH DAY</mat-label>
+      <input matInput value="{{ customer.birthDay | date : 'dd/MM/YYYY' }}" />
+    </mat-form-field>
 
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>AGE </mat-label>
@@ -65,12 +61,18 @@
 
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>Address</mat-label>
-      <textarea [disabled]="true" matInput rows="5" [(ngModel)]="customer.address"></textarea>
+      <textarea
+        [disabled]="true"
+        matInput
+        rows="5"
+        [(ngModel)]="customer.address"
+      ></textarea>
     </mat-form-field>
 
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>CongenitalDisease</mat-label>
-      <textarea [disabled]="true"
+      <textarea
+        [disabled]="true"
         matInput
         rows="5"
         [(ngModel)]="customer.congenitalDisease"
@@ -79,15 +81,50 @@
 
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>Allergic</mat-label>
-      <textarea [disabled]="true" matInput rows="5" [(ngModel)]="customer.allergic"></textarea>
+      <textarea
+        [disabled]="true"
+        matInput
+        rows="5"
+        [(ngModel)]="customer.allergic"
+      ></textarea>
     </mat-form-field>
+
+    <table fxFlex="40" *ngIf="customer.xrayImage.length > 0">
+      <tr>
+        <th>ลำดับ</th>
+        <th>ชื่อไฟล์</th>
+        <!-- <th>ขนาดไฟล์</th> -->
+        <th>อัพเดทเมื่อ</th>
+      </tr>
+      <tr *ngFor="let file of customer.xrayImage; let i = index">
+        <td>
+          {{ i + 1 }}
+        </td>
+        <td>
+          <a target="_blank" [href]="file.path">
+            {{ file.name }}
+          </a>
+        </td>
+        <!-- <td>
+          {{ file.size }}
+        </td> -->
+        <td>
+          {{ file.date | date : "dd-MMM-YY, HH:mm" }}
+        </td>
+      </tr>
+    </table>
+    <!-- <div fxFlex="40"></div> -->
 
     <mat-form-field fxFlex="40" appearance="legacy">
       <mat-label>Description</mat-label>
-      <textarea [disabled]="true" matInput rows="5" [(ngModel)]="customer.description"></textarea>
+      <textarea
+        [disabled]="true"
+        matInput
+        rows="5"
+        [(ngModel)]="customer.description"
+      ></textarea>
     </mat-form-field>
 
-    <div fxFlex="40" appearance="legacy">
-    </div>
+    <div fxFlex="40" appearance="legacy"></div>
   </div>
 </div>

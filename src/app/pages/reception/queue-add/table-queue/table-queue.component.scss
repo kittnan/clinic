@@ -1,5 +1,26 @@
-.box{
-    box-shadow: 2px 2px 8px 4px rgba(0, 0, 0, 0.32);
-        margin: 20px 0;
-    padding: 20px;
+.box {
+  box-shadow: 2px 2px 8px 4px rgba(0, 0, 0, 0.32);
+  margin: 20px 0;
+  padding: 20px;
+}
+.waitConfirm {
+  color: rgb(16, 59, 198);
+}
+.waitDoctor {
+  color: green;
+}
+.next {
+  color: rgb(149, 149, 149);
+}
+.cancel {
+  color: rgb(239, 161, 52);
+}
+.lost {
+  color: rgb(229, 91, 91);
+}
+.healed {
+  color: rgb(22, 219, 0);
+}
+.finish {
+  color: rgb(24, 121, 13);
 }

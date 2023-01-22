@@ -1,6 +1,11 @@
 <h2 mat-dialog-title>CUSTOMER</h2>
 <mat-dialog-content class="mat-typography">
-  <form fxLayoutAlign="start stretch" fxLayout="row wrap" [formGroup]="registerForm" style="text-align: center">
+  <form
+    fxLayoutAlign="start stretch"
+    fxLayout="row wrap"
+    [formGroup]="registerForm"
+    style="text-align: center"
+  >
     <mat-form-field fxFlex="100" appearance="legacy">
       <mat-label>CUSTOMER ID</mat-label>
       <input
@@ -52,17 +57,21 @@
 
     <mat-form-field fxFlex="100" appearance="fill">
       <mat-label>BIRTH DAY</mat-label>
-      <input matInput [matDatepicker]="birthday" formControlName="birthDay" (dateChange)="onBirthDay()" >
+      <input
+        matInput
+        [matDatepicker]="birthday"
+        formControlName="birthDay"
+        (dateChange)="onBirthDay()"
+      />
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
-      <mat-datepicker #birthday startView="multi-year" ></mat-datepicker>
+      <mat-datepicker #birthday startView="multi-year"></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field fxFlex="100" appearance="legacy">
       <mat-label>AGE </mat-label>
       <input matInput placeholder="" formControlName="age" [readonly]="true" />
     </mat-form-field>
-    
 
     <mat-form-field fxFlex="100" appearance="fill">
       <mat-label>PhoneNumber</mat-label>
@@ -87,6 +96,54 @@
       <mat-label>Allergic</mat-label>
       <textarea matInput rows="5" formControlName="allergic"></textarea>
     </mat-form-field>
+
+    <button
+      type="button"
+      mat-raised-button
+      (click)="fileInput.click()"
+      style="margin: 10px 0"
+    >
+      Choose xrayImage Files
+    </button>
+    <input
+      hidden
+      (change)="onFileSelected()"
+      #fileInput
+      type="file"
+      multiple
+      id="file"
+    />
+
+    <table fxFlex="100" *ngIf="tempShowFiles.length > 0">
+      <tr>
+        <th>ลำดับ</th>
+        <th>ชื่อไฟล์</th>
+        <th>ขนาดไฟล์</th>
+        <th>อัพเดทเมื่อ</th>
+        <th>ลบ</th>
+      </tr>
+      <tr *ngFor="let file of tempShowFiles; let i = index">
+        <td>
+          {{ i + 1 }}
+        </td>
+        <td>
+          <a target="_blank" [href]="file.path">
+            {{ file.name }}
+          </a>
+        </td>
+        <td>
+          {{ file.size }}
+        </td>
+        <td>
+          {{ file.date | date : "dd-MMM-YY, HH:mm" }}
+        </td>
+        <td>
+          <button mat-button color="warn" (click)="onClickDeleteFile(file)">
+            X
+          </button>
+        </td>
+      </tr>
+    </table>
 
     <mat-form-field fxFlex="100" appearance="fill">
       <mat-label>Description</mat-label>
@@ -116,5 +173,4 @@
     <mat-icon class="mat-18"> add_task </mat-icon>
     CREATE
   </button>
-
 </mat-dialog-actions>

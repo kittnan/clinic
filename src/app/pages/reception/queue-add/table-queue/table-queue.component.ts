@@ -98,7 +98,8 @@ export class TableQueueComponent implements OnInit {
 
   setMenu(queues: any[]) {
     this.menuList = queues.map((q: any) => {
-      if (q.status === 'waitDoctor') return ['เลื่อนนัด', 'ยกเลิกนัด'];
+      if (q.status === 'waitDoctor')
+        return ['เลื่อนนัด', 'ยกเลิกนัด', 'ไม่มานัด'];
       if (q.status === 'healed') return ['สำเร็จ'];
       if (q.status === 'waitConfirm')
         return ['เลื่อนนัด', 'ยกเลิกนัด', 'ไม่มานัด'];
@@ -225,5 +226,22 @@ export class TableQueueComponent implements OnInit {
         this.onSelectRange();
       }
     });
+  }
+
+  htmlClassStatus(status: any) {
+    return status;
+    // if (status === 'waitConfirm') return 'waitConfirm';
+    // if (status === 'waitDoctor') return 'waitDoctor';
+    // if (status === 'lost') return 'lost';
+    // if (status === 'cancel') return 'cancel';
+    // if (status === 'next') return 'next';
+    // if (status === 'healed') return 'healed';
+    // return '';
+  }
+
+  htmlDisableMenu(status: string) {
+    if (status === 'waitConfirm') return false;
+    if (status === 'waitDoctor') return false;
+    return true;
   }
 }

@@ -172,6 +172,11 @@ export class QueueDetailComponent implements OnInit {
     this.queueForm.patchValue({
       status: this.selectedStatus,
     });
+    if (this.selectedStatus == 'next') {
+      this.min = new Date(moment().add(1, 'day').toString());
+      this.date = this.min;
+      this.max = null;
+    }
     if (this.selectedStatus == 'waitConfirm') {
       this.min = new Date(moment().add(1, 'day').toString());
       this.date = this.min;
@@ -196,6 +201,8 @@ export class QueueDetailComponent implements OnInit {
       icon: 'question',
       showCancelButton: true,
     }).then(async (value: SweetAlertResult) => {
+      console.log(this.selectedStatus, this.prevQueue, this.queueForm.value);
+
       if (value.isConfirmed) {
         if (this.selectedStatus == 'next') {
           if (this.prevQueue.status != 'healed') {

@@ -1,29 +1,48 @@
 <div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap" class="box">
-  <mat-form-field fxFlex="33" appearance="fill" >
+  <mat-form-field fxFlex="33" appearance="fill">
     <mat-label>Choose a date</mat-label>
-    <input matInput  [min]="min" [max]="max" [matDatepicker]="datepicker" [(ngModel)]="date" (dateChange)="genTime()">
+    <input
+      [disabled]="htmlValidDisable(disable)"
+      matInput
+      [min]="min"
+      [max]="max"
+      [matDatepicker]="datepicker"
+      [(ngModel)]="date"
+      (dateChange)="genTime()"
+    />
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
     <mat-datepicker #datepicker>
       <mat-datepicker-actions>
         <button mat-button matDatepickerCancel>Cancel</button>
-        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+        <button mat-raised-button color="primary" matDatepickerApply>
+          Apply
+        </button>
       </mat-datepicker-actions>
     </mat-datepicker>
   </mat-form-field>
 
-
-  <mat-form-field fxFlex="33"  appearance="fill">
+  <mat-form-field fxFlex="33" appearance="fill">
     <mat-label>Time</mat-label>
-    <input matInput type="time" [(ngModel)]="time" (ngModelChange)="genTime()" >
+    <input
+      [disabled]="htmlValidDisable(disable)"
+      matInput
+      type="time"
+      [(ngModel)]="time"
+      (ngModelChange)="genTime()"
+    />
   </mat-form-field>
 
-
-  <mat-form-field fxFlex="33"   appearance="fill">
+  <mat-form-field fxFlex="33" appearance="fill">
     <mat-label>Doctor</mat-label>
-    <mat-select [(ngModel)]="doctor" name="food" (ngModelChange)="genTime()">
+    <mat-select
+      [disabled]="htmlValidDisable(disable)"
+      [(ngModel)]="doctor"
+      name="food"
+      (ngModelChange)="genTime()"
+    >
       <mat-option *ngFor="let item of doctorList" [value]="item._id">
-        {{item.firstName}} {{item.lastName}}
+        {{ item.firstName }} {{ item.lastName }}
       </mat-option>
     </mat-select>
   </mat-form-field>

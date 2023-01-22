@@ -10,8 +10,8 @@ export class QueueHttpService {
   private sub: any = 'queue';
   constructor(private http: HttpClient) {}
 
-  get(param:HttpParams): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/`,{params:param});
+  get(param: HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/`, { params: param });
   }
   add(data: any): Observable<any> {
     return this.http.post(`${this.URL}/${this.sub}/add/`, data);
@@ -22,21 +22,21 @@ export class QueueHttpService {
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${this.URL}/${this.sub}/update/` + id, data);
   }
-  queueDay(param:HttpParams): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/day`,{params:param});
+  queueDay(param: HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/day`, { params: param });
   }
-  queueWeek(param:HttpParams): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/week`,{params:param});
+  queueWeek(param: HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/week`, { params: param });
   }
-  queueMonth(param:HttpParams): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/month`,{params:param});
+  queueMonth(param: HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/month`, { params: param });
   }
-  queuePeriod(param:HttpParams): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/period`,{params:param});
+  queuePeriod(param: HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/period`, { params: param });
   }
-
-  queueDayCustomer(param:HttpParams): Observable<any> {
-    return this.http.get(`${this.URL}/${this.sub}/dayUpCustomer`,{params:param});
+  queueDayCustomer(param: HttpParams): Observable<any> {
+    return this.http.get(`${this.URL}/${this.sub}/dayUpCustomer`, {
+      params: param,
+    });
   }
-
 }

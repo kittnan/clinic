@@ -16,6 +16,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { NgxUiLoaderModule, NgxUiLoaderConfig } from 'ngx-ui-loader';
+import { ConfirmComponent } from './pages/confirm/confirm.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#74be56',
@@ -49,7 +50,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotFoundComponent],
+  declarations: [AppComponent, LoginComponent, NotFoundComponent, ConfirmComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
