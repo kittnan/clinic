@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
         if (access === 'reception') {
           const param = new HttpParams().set('id', id);
           const queue: any = await this.$queues.get(param).toPromise();
-          if (queue && queue.status === 'waitConfirm') {
+          if (queue && queue[0].status === 'waitConfirm') {
             await this.$queues
               .update(id, { ...queue, status: 'waitDoctor' })
               .toPromise();
