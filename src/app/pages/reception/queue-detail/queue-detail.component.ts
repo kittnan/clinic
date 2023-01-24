@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
+import { LineHttpService } from 'src/app/api/line-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 
@@ -38,7 +39,8 @@ export class QueueDetailComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private $customer: CustomerHttpService,
-    private $queue: QueueHttpService
+    private $queue: QueueHttpService,
+    private $line: LineHttpService
   ) {}
 
   ngOnInit(): void {
@@ -219,7 +221,10 @@ export class QueueDetailComponent implements OnInit {
           });
           const body = this.queueForm.value;
           delete body._id;
-          await this.$queue.add(body).toPromise();
+          const nextQueue = await this.$queue.add(body).toPromise();
+          if (nextQueue && nextQueue.length > 0) {
+            await this.$line.sendQR({ data: nextQueue[0] }).toPromise();
+          }
           Swal.fire('SUCCESS', '', 'success');
           setTimeout(() => {
             this._router.navigate(['reception/queue']);
