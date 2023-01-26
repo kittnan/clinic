@@ -13,49 +13,59 @@ import { DialogCustomerComponent } from './dialog-customer/dialog-customer.compo
 @Component({
   selector: 'app-share-customer',
   templateUrl: './share-customer.component.html',
-  styleUrls: ['./share-customer.component.scss']
+  styleUrls: ['./share-customer.component.scss'],
 })
 export class ShareCustomerComponent implements OnInit {
-
-  displayedColumns!: string[]
+  displayedColumns!: string[];
   dataSource!: MatTableDataSource<any>;
-  columnsToDisplayWithExpand:any
+  columnsToDisplayWithExpand: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  showAddModal = false;
 
   constructor(
     public dialog: MatDialog,
     private $customer: CustomerHttpService,
     private _router: Router
-     ) {
-  }
+  ) {}
 
   async ngOnInit(): Promise<void> {
-    this.getMember()
+    if (localStorage.getItem('access') === 'admin') this.showAddModal = true;
+    this.getMember();
   }
 
-  async getMember(){
-    const member = await this.$customer.get().toPromise()
+  async getMember() {
+    const member = await this.$customer.get().toPromise();
     console.log(member);
-    
-    this.dataSource = new MatTableDataSource(member)
-    this.setTable()
+
+    this.dataSource = new MatTableDataSource(member);
+    this.setTable();
   }
-  setTable(){
-    this.displayedColumns = ['customerId','idCard','firstName','phoneNumber','action','queue']
+  setTable() {
+    this.displayedColumns = [
+      'customerId',
+      'idCard',
+      'firstName',
+      'phoneNumber',
+      'action',
+      'queue',
+    ];
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   add() {
-    const dialogRef: MatDialogRef<any> = this.dialog.open(DialogCustomerComponent,{
-      maxWidth:1000
-    });
-    dialogRef.afterClosed().subscribe(res=>{
-      if(res){
-        this.getMember()
+    const dialogRef: MatDialogRef<any> = this.dialog.open(
+      DialogCustomerComponent,
+      {
+        maxWidth: 1000,
       }
-    })
+    );
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.getMember();
+      }
+    });
   }
 
   applyFilter(event: Event) {
@@ -66,59 +76,57 @@ export class ShareCustomerComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  onDelete(item:any){
+  onDelete(item: any) {
     Swal.fire({
-      title:`${item.firstName} ${item.lastName}`,
-      icon:'question',
-      showCancelButton:true,
-    }).then((value:SweetAlertResult)=>{
-      if(value.isConfirmed){
-        this.delete(item._id)
+      title: `${item.firstName} ${item.lastName}`,
+      icon: 'question',
+      showCancelButton: true,
+    }).then((value: SweetAlertResult) => {
+      if (value.isConfirmed) {
+        this.delete(item._id);
       }
-    })
+    });
   }
-  delete(_id:any){
-    this.$customer.delete(_id).subscribe(res=>{
-      if(res && res.acknowledged){
-        Swal.fire('SUCCESS','','success')
-        this.getMember()
-      }else{
-        Swal.fire('ERROR','','error')
+  delete(_id: any) {
+    this.$customer.delete(_id).subscribe((res) => {
+      if (res && res.acknowledged) {
+        Swal.fire('SUCCESS', '', 'success');
+        this.getMember();
+      } else {
+        Swal.fire('ERROR', '', 'error');
       }
-      
-    })
-  }
-
-  onEdit(item:any){
-    const dialogRef = this.dialog.open(DialogCustomerComponent,{
-      data:item,
-      maxWidth:600
-    })
-    dialogRef.afterClosed().subscribe(res=>{
-      if(res){
-        this.getMember()
-      }
-    })
+    });
   }
 
-  onView(item:any){
-    const dialogRef = this.dialog.open(DialogCustomerComponent,{
-      data:{
+  onEdit(item: any) {
+    const dialogRef = this.dialog.open(DialogCustomerComponent, {
+      data: item,
+      maxWidth: 600,
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.getMember();
+      }
+    });
+  }
+
+  onView(item: any) {
+    const dialogRef = this.dialog.open(DialogCustomerComponent, {
+      data: {
         ...item,
-        read:true
+        read: true,
       },
-      maxWidth:600
-    })
+      maxWidth: 600,
+    });
   }
 
   onQueue(item: any) {
     console.log(item);
-    
+
     this._router.navigate(['reception/queue-detail'], {
       queryParams: {
         userId: item._id,
       },
     });
   }
-
 }

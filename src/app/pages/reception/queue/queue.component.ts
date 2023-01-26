@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { DialogCustomerComponent } from 'src/app/share/components/page/share-customer/dialog-customer/dialog-customer.component';
 import Swal, { SweetAlertResult } from 'sweetalert2';
@@ -23,11 +24,19 @@ export class QueueComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private $customer: CustomerHttpService,
-    private _router: Router
+    private _router: Router,
+    private _loading: NgxUiLoaderService
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this._loading.start();
+
     this.getMember();
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
   }
 
   async getMember() {
@@ -51,7 +60,7 @@ export class QueueComponent implements OnInit {
   }
 
   add() {
-    this._router.navigate(['reception/queue-add'])
+    this._router.navigate(['reception/queue-add']);
     // const dialogRef: MatDialogRef<any> = this.dialog.open(
     //   DialogCustomerComponent,
     //   {

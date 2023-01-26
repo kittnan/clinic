@@ -51,10 +51,12 @@ export class CustomerAddComponent implements OnInit {
     private $customer: CustomerHttpService,
     private $files: FilesHttpService,
     private httpClient: HttpClient,
-    private _loading : NgxUiLoaderService
+    private _loading: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
+    this._loading.start();
+
     const user: any = localStorage.getItem('userLogin');
     this.userLogin = JSON.parse(user);
     this.registerForm.patchValue({
@@ -62,13 +64,16 @@ export class CustomerAddComponent implements OnInit {
     });
     this.getCustomerId();
   }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
+  }
 
   toggleScan() {
-    this._loading.start()
+    this._loading.start();
     console.log('startScan');
-    this.readTextFile(
-      'assets/SIAM-ID/Data.txt'
-    );
+    this.readTextFile('assets/SIAM-ID/Data.txt');
   }
   readTextFile(file: any) {
     this.httpClient
@@ -95,8 +100,7 @@ export class CustomerAddComponent implements OnInit {
         });
         this.onBirthDay();
         setTimeout(() => {
-    this._loading.stopAll()
-        
+          this._loading.stopAll();
         }, 1000);
       });
   }
@@ -178,7 +182,7 @@ export class CustomerAddComponent implements OnInit {
     this.$customer.add(value).subscribe((res) => {
       if (res && res.length > 0) {
         Swal.fire('SUCCESS', '', 'success');
-        location.reload()
+        location.reload();
       } else {
         Swal.fire('SOMETHING IS WRONG', '', 'error');
       }

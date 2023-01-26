@@ -1,0 +1,46 @@
+<div
+  fxLayoutAlign="center stretch"
+  fxLayout="row wrap"
+  style="overflow: auto; padding: 20px; margin: 10px 0 20px 0"
+>
+  <div fxFlex="80" fxLayoutAlign="center stretch" fxLayout="row wrap">
+    <div
+      fxFlex="100"
+      fxLayoutAlign="start stretch"
+      fxLayout="row wrap"
+      class="content"
+    >
+      <ng-container *ngFor="let item of data; let i = index">
+        <mat-card *ngIf="i == 0" fxFlex="100" class="example-card">
+          <mat-card-header>
+            <mat-card-title>{{ item.h1 }}</mat-card-title>
+            <mat-card-subtitle>{{ item.h2 }}</mat-card-subtitle>
+          </mat-card-header>
+          <div id="box-text" fxLayoutAlign="center center">
+            <span id="text">
+              {{ item.percent | percent }}
+            </span>
+          </div>
+          <mat-card-content> </mat-card-content>
+        </mat-card>
+        <mat-card
+          *ngIf="i != 0"
+          fxFlex="30"
+          fxFlexOffset="3"
+          class="example-card"
+        >
+          <mat-card-header>
+            <mat-card-title>{{ item.h1 }}</mat-card-title>
+            <mat-card-subtitle>{{ item.h2 }}</mat-card-subtitle>
+          </mat-card-header>
+          <div id="box-text" fxLayoutAlign="center center">
+            <span id="text">
+              {{ item.percent | percent }}
+            </span>
+          </div>
+          <mat-card-content> </mat-card-content>
+        </mat-card>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { MemberHttpService } from 'src/app/api/member-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
@@ -26,10 +27,13 @@ export class QueueAddComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private $queue: QueueHttpService,
-    private $customer: CustomerHttpService
+    private $customer: CustomerHttpService,
+    private _loading: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
+    this._loading.start();
+
     this._route.queryParams.subscribe(async (params) => {
       if (params && params['userId']) {
         const http_param: HttpParams = new HttpParams().set(
@@ -49,6 +53,11 @@ export class QueueAddComponent implements OnInit {
       updateBy: this.userLogin._id,
     });
   }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
+  }
 
   emit(e: any) {
     this.queueForm.patchValue({
@@ -56,7 +65,6 @@ export class QueueAddComponent implements OnInit {
     });
   }
   emitQueue(e: any) {
-    
     this.queueForm.patchValue({
       ...e,
     });
@@ -76,7 +84,7 @@ export class QueueAddComponent implements OnInit {
     this.$queue.add(this.queueForm.value).subscribe((res) => {
       if (res && !res.error && res.length > 0) {
         Swal.fire('SUCCESS', '', 'success');
-      }else{
+      } else {
         Swal.fire(`มีคิว ${res.data[0].customerName} อยู่แล้ว`, '', 'error');
         console.log(res);
       }

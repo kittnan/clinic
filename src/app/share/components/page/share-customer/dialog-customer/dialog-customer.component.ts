@@ -44,7 +44,6 @@ export class DialogCustomerComponent implements OnInit {
 
   positionList = ['reception', 'doctor', 'admin'];
   readOnlyState: any = false;
-
   @ViewChild('fileInput') fileInput!: ElementRef;
   tempShowFiles: any[] = [];
   constructor(

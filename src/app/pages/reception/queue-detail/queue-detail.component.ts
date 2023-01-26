@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { LineHttpService } from 'src/app/api/line-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
@@ -40,10 +41,13 @@ export class QueueDetailComponent implements OnInit {
     private _route: ActivatedRoute,
     private $customer: CustomerHttpService,
     private $queue: QueueHttpService,
-    private $line: LineHttpService
+    private $line: LineHttpService,
+    private _loading: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
+    this._loading.start();
+
     this._route.queryParams.subscribe(async (params) => {
       if (params && params['userId']) {
         const http_param: HttpParams = new HttpParams().set(
@@ -170,6 +174,11 @@ export class QueueDetailComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
+  }
   onChangeStatus() {
     this.queueForm.patchValue({
       status: this.selectedStatus,

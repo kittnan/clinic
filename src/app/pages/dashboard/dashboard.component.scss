@@ -1,0 +1,15 @@
+.example-card {
+  max-width: 400px;
+}
+::ng-deep .mat-card {
+  margin: 10px 0;
+}
+#box-text {
+  width: 100%;
+  min-height: 100px;
+  background-color: rgba(84, 219, 212, 0.708);
+  border-radius: 10px;
+}
+#text {
+  font-size: 60px;
+}

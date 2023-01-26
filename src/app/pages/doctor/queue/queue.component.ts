@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { interval, Subscription } from 'rxjs';
 import { MemberHttpService } from 'src/app/api/member-http.service';
 import { QueueHttpService } from 'src/app/api/queue-http.service';
@@ -14,41 +15,45 @@ import { QueueHttpService } from 'src/app/api/queue-http.service';
   styleUrls: ['./queue.component.scss'],
 })
 export class QueueComponent implements OnInit {
-
   interval$!: Subscription;
 
-  displayedColumns: string[] =[
+  displayedColumns: string[] = [
     'id',
     'customerName',
     'doctorName',
     'startDate',
     'status',
     'action',
-  ]
+  ];
   dataSource!: MatTableDataSource<any>;
   userLogin: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   constructor(
     private $queue: QueueHttpService,
-    private _router:Router
+    private _router: Router,
+    private _loading: NgxUiLoaderService
   ) {
     let session: any = localStorage.getItem('userLogin');
     this.userLogin = JSON.parse(session);
   }
 
   ngOnInit(): void {
-    this.interval$ = interval(30000)
-    .subscribe(res => this.getQueue());
+    this._loading.start();
+
+    this.interval$ = interval(30000).subscribe((res) => this.getQueue());
     this.getQueue();
   }
 
-  auto(){
-    setTimeout(() => {
-      
-    }, 1000);
+  auto() {
+    setTimeout(() => {}, 1000);
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
+  }
   async getQueue() {
     const param: HttpParams = new HttpParams().set(
       'doctorId',
@@ -73,34 +78,34 @@ export class QueueComponent implements OnInit {
     }
   }
 
-  htmlStatus(item:any){
-    if(item.status=='waitConfirm') return 'รอยืนยัน'
-    if(item.status=='waitDoctor') return 'รอตรวจ'
-    if(item.status=='next') return 'เลื่อนนัด'
-    if(item.status=='cancel') return 'ยกเลิกนัด'
-    if(item.status=='lost') return 'ไม่มานัด'
-    if(item.status=='healed') return 'รักษาสำเร็จ'
-    if(item.status=='finish') return 'สำเร็จ'
-    return ''
+  htmlStatus(item: any) {
+    if (item.status == 'waitConfirm') return 'รอยืนยัน';
+    if (item.status == 'waitDoctor') return 'รอตรวจ';
+    if (item.status == 'next') return 'เลื่อนนัด';
+    if (item.status == 'cancel') return 'ยกเลิกนัด';
+    if (item.status == 'lost') return 'ไม่มานัด';
+    if (item.status == 'healed') return 'รักษาสำเร็จ';
+    if (item.status == 'finish') return 'สำเร็จ';
+    return '';
   }
 
-  toLink(item:any){
+  toLink(item: any) {
     console.log(item);
     this._router.navigate(['doctor/heal'], {
       queryParams: {
         customerId: item.customerId,
-        queueId:item._id,
-        edit:false
+        queueId: item._id,
+        edit: false,
       },
     });
   }
 
-  onEditHeal(item:any){
+  onEditHeal(item: any) {
     this._router.navigate(['doctor/heal'], {
       queryParams: {
         customerId: item.customerId,
-        queueId:item._id,
-        edit: true
+        queueId: item._id,
+        edit: true,
       },
     });
   }

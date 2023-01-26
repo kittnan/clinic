@@ -39,4 +39,8 @@ export class QueueHttpService {
       params: param,
     });
   }
+
+  static(): Observable<any> {
+    return this.http.get(`${this.URL}/static/`);
+  }
 }

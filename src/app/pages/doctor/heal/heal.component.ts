@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CheckupHttpService } from 'src/app/api/checkup-http.service';
 import { CustomerHttpService } from 'src/app/api/customer-http.service';
 import { HistoryHealHttpService } from 'src/app/api/history-heal-http.service';
@@ -35,13 +36,16 @@ export class HealComponent implements OnInit {
     private $checkup: CheckupHttpService,
     private $historyHeal: HistoryHealHttpService,
     private $queue: QueueHttpService,
-    private _toast: ToastService
+    private _toast: ToastService,
+    private _loading: NgxUiLoaderService
   ) {
     let session: any = localStorage.getItem('userLogin');
     this.userLogin = JSON.parse(session);
   }
 
   ngOnInit(): void {
+    this._loading.start();
+
     this._route.queryParams.subscribe(async (params) => {
       if (params && params['customerId']) {
         const http_param: HttpParams = new HttpParams().set(
@@ -80,6 +84,11 @@ export class HealComponent implements OnInit {
     });
 
     this.getCheckupList();
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this._loading.stopAll();
+    }, 1000);
   }
 
   private async getCheckupList() {

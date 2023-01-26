@@ -51,6 +51,17 @@ export class AppComponent {
     if (access === 'admin') {
       this.sideItems = [
         {
+          title: 'dashboard',
+          icon: 'dashboard',
+          items: [
+            {
+              path: '/dashboard',
+              icon: 'percent',
+              title: 'static',
+            },
+          ],
+        },
+        {
           title: 'customer',
           icon: 'feed',
           items: [
@@ -94,6 +105,17 @@ export class AppComponent {
     if (access === 'reception') {
       this.sideItems = [
         {
+          title: 'dashboard',
+          icon: 'dashboard',
+          items: [
+            {
+              path: '/dashboard',
+              icon: 'percent',
+              title: 'static',
+            },
+          ],
+        },
+        {
           title: 'customer',
           icon: 'feed',
           items: [
@@ -133,6 +155,17 @@ export class AppComponent {
     }
     if (access === 'doctor') {
       this.sideItems = [
+        {
+          title: 'dashboard',
+          icon: 'dashboard',
+          items: [
+            {
+              path: '/dashboard',
+              icon: 'percent',
+              title: 'static',
+            },
+          ],
+        },
         {
           title: 'customer',
           icon: 'feed',
