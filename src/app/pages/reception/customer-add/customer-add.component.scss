@@ -1,0 +1,14 @@
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+::ng-deep .mat-form-field-wrapper {
+    margin: 5px 0;
+}

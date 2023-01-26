@@ -1,0 +1,139 @@
+<div fxLayoutAlign="center stretch" fxLayout="row wrap" style="overflow: auto;">
+
+    <div fxFlex="80" fxLayoutAlign="center stretch" fxLayout="row wrap" style="padding: 20px 0 50px 0 ;">
+
+        <form [formGroup]="registerForm" fxFlex="100" fxLayoutAlign="space-around stretch" fxLayout="row wrap" class="content" style="text-align: center">
+            <div fxFlex="100" fxLayoutAlign="end stretch" fxLayout="row wrap">
+                <button mat-raised-button (click)="toggleScan()" color="accent">
+                    <mat-icon class="mat-18"> sensor_occupied </mat-icon>
+                    SCAN
+                  </button>
+
+            </div>
+            <h1 fxFlex="100">NEW CUSTOMER</h1>
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>CUSTOMER ID</mat-label>
+                <input matInput placeholder="NH-xxxx" formControlName="customerId" [readonly]="true" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>ID Card</mat-label>
+                <input matInput placeholder="" formControlName="idCard" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>Title Name</mat-label>
+                <mat-select formControlName="titleName">
+                    <mat-option *ngFor="let item of titleNameList; let i = index" [value]="item">
+                        {{ item | uppercase }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>FirstName</mat-label>
+                <input matInput placeholder="" formControlName="firstName" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>LastName </mat-label>
+                <input matInput placeholder="" formControlName="lastName" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                    <mat-option *ngFor="let item of genderList; let i = index" [value]="item">
+                        {{ item | uppercase }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>BIRTH DAY</mat-label>
+                <input matInput [matDatepicker]="birthday" formControlName="birthDay" (dateChange)="onBirthDay()" />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
+                <mat-datepicker #birthday startView="multi-year"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>AGE </mat-label>
+                <input matInput placeholder="" formControlName="age" [readonly]="true" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>PhoneNumber</mat-label>
+                <input matInput placeholder="" formControlName="phoneNumber" />
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>Address</mat-label>
+                <textarea matInput rows="5" formControlName="address"></textarea>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>CongenitalDisease</mat-label>
+                <textarea matInput rows="5" formControlName="congenitalDisease"></textarea>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="45" appearance="fill">
+                <mat-label>Allergic</mat-label>
+                <textarea matInput rows="5" formControlName="allergic"></textarea>
+            </mat-form-field>
+
+            <div fxFlex="100" fxLayoutAlign="start stretch" fxLayout="row wrap">
+                <button type="button" mat-raised-button (click)="fileInput.click()" style="margin: 10px 0">
+          Choose xrayImage Files
+        </button>
+            </div>
+            <input hidden (change)="onFileSelected()" #fileInput type="file" multiple id="file" />
+
+
+            <div fxFlex="90" fxLayoutAlign="center stretch" fxLayout="row wrap">
+                <table fxFlex="100" *ngIf="tempShowFiles.length > 0">
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อไฟล์</th>
+                        <th>ขนาดไฟล์</th>
+                        <th>อัพเดทเมื่อ</th>
+                        <th>ลบ</th>
+                    </tr>
+                    <tr *ngFor="let file of tempShowFiles; let i = index">
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+                        <td>
+                            <a target="_blank" [href]="file.path">
+                {{ file.name }}
+              </a>
+                        </td>
+                        <td>
+                            {{ file.size }}
+                        </td>
+                        <td>
+                            {{ file.date | date : "dd-MMM-YY, HH:mm" }}
+                        </td>
+                        <td>
+                            <button mat-button color="warn" (click)="onClickDeleteFile(file)">
+                X
+              </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+            <mat-form-field fxFlex="100" appearance="fill">
+                <mat-label>Description</mat-label>
+                <textarea matInput rows="5" formControlName="description"></textarea>
+            </mat-form-field>
+            <div fxFlex="100" fxLayoutAlign="center stretch" fxLayout="row wrap">
+                <button mat-raised-button (click)="onSubmit()" [disabled]="registerForm.invalid" color="primary">
+            <mat-icon class="mat-18"> add_task </mat-icon>
+            CREATE
+          </button>
+            </div>
+        </form>
+    </div>
+</div>

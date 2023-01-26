@@ -42,7 +42,7 @@ export class ShareCustomerComponent implements OnInit {
     this.setTable()
   }
   setTable(){
-    this.displayedColumns = ['customerId','idCard','firstName','phoneNumber','updateBy','action','queue']
+    this.displayedColumns = ['customerId','idCard','firstName','phoneNumber','action','queue']
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }

@@ -35,7 +35,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 const materialModules = [
   CdkTreeModule,
@@ -73,6 +73,7 @@ const materialModules = [
   FlexLayoutModule,
   MatDialogModule,
   MatNativeDateModule,
+  MatProgressBarModule
 
  
 ];

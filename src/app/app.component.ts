@@ -98,6 +98,11 @@ export class AppComponent {
           icon: 'feed',
           items: [
             {
+              path: '/reception/customer-add',
+              icon: 'group',
+              title: 'new customer',
+            },
+            {
               path: '/reception/customer',
               icon: 'group',
               title: 'customer',
