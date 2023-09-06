@@ -99,6 +99,8 @@ export class HealComponent implements OnInit {
   private filterHealList(checkupList: any) {
     if (checkupList && checkupList.length > 0) {
       this.healList = checkupList.filter((c: any) => c.groupType == 'heal');
+      this.healList = this.healList.sort((a:any,b:any)=>a.code-b.code)
+      
     } else {
       this.healList = [];
     }
@@ -107,6 +109,8 @@ export class HealComponent implements OnInit {
   private filterSideList(checkupList: any) {
     if (checkupList && checkupList.length > 0) {
       this.sideList = checkupList.filter((c: any) => c.groupType == 'side');
+      this.sideList = this.sideList.sort((a:any,b:any)=>a.code-b.code)
+
     } else {
       this.sideList = [];
     }

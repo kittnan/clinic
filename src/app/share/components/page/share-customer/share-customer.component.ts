@@ -78,7 +78,7 @@ export class ShareCustomerComponent implements OnInit {
   }
   onDelete(item: any) {
     Swal.fire({
-      title: `${item.firstName} ${item.lastName}`,
+      title:  `ต้องการลบ ${item.firstName} ${item.lastName}`,
       icon: 'question',
       showCancelButton: true,
     }).then((value: SweetAlertResult) => {
