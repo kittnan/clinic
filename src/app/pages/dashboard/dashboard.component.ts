@@ -17,18 +17,33 @@ export class DashboardComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this._loading.start();
     const resStatic = await this.$queues.static().toPromise();
+    console.log(
+      '🚀 ~ file: dashboard.component.ts:20 ~ DashboardComponent ~ ngOnInit ~ resStatic:',
+      resStatic
+    );
     this.data = this.mapData(resStatic);
   }
   mapData(data: any[]) {
     return data.map((d: any, i: any) => {
-      const h1 = d.value;
-      const h2 = `จำนวน: ${d.count}`;
-      return {
-        h1: h1,
-        h2: h2,
-        count: d.count,
-        percent: d.percent,
-      };
+      if (d.name == 'total') {
+        const h1 = d.value;
+        const h2 = `รวม: ${d.count}`;
+        return {
+          h1: h1,
+          h2: h2,
+          count: d.count,
+          percent: d.percent,
+        };
+      } else {
+        const h1 = d.value;
+        const h2 = `จำนวน: ${d.count}`;
+        return {
+          h1: h1,
+          h2: h2,
+          count: d.count,
+          percent: d.percent,
+        };
+      }
     });
   }
   ngAfterViewInit(): void {

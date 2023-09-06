@@ -14,11 +14,11 @@
         <mat-card *ngIf="i == 0" fxFlex="100" class="example-card">
           <mat-card-header>
             <mat-card-title>{{ item.h1 }}</mat-card-title>
-            <mat-card-subtitle>{{ item.h2 }}</mat-card-subtitle>
+            <!-- <mat-card-subtitle>{{ item.h2 }}</mat-card-subtitle> -->
           </mat-card-header>
           <div id="box-text" fxLayoutAlign="center center">
             <span id="text">
-              {{ item.percent | percent }}
+              {{ item.h2 }}
             </span>
           </div>
           <mat-card-content> </mat-card-content>
